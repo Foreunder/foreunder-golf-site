@@ -173,10 +173,10 @@ footer.credits strong{color:var(--ink);font-weight:600}
               <option value="aggressive">Aggressive: fast, hard change of direction</option>
             </select></label>
         </div>
-        <p class="hint" style="margin-top:16px">Launch monitor averages per club (Garmin R10). Drop clear mishits.</p>
+        <p class="hint" style="margin-top:16px">Launch monitor averages per club (Garmin R10). Drop clear mishits. Carry spread = longest minus shortest carry of the good swings.</p>
         <div class="tblwrap">
           <table>
-            <thead><tr><th>Club</th><th>Club speed (mph)</th><th>Launch (°)</th><th>Spin (rpm)</th><th>Carry (yd)</th><th>Side (yd)</th><th></th></tr></thead>
+            <thead><tr><th>Club</th><th>Club speed (mph)</th><th>Ball speed (mph)</th><th>Launch (°)</th><th>Spin (rpm)</th><th>Carry (yd)</th><th>Apex (yd)</th><th>Carry spread (yd)</th><th>Side (yd)</th><th></th></tr></thead>
             <tbody id="clubRows"></tbody>
           </table>
         </div>
@@ -222,7 +222,7 @@ footer.credits strong{color:var(--ink);font-weight:600}
   </div>
 
   <footer class="credits">
-    <p><strong>Standards used.</strong> Starting length and lie: PING Color Code Chart and PING fitting manual (each color code is 1° of lie). Grip size: Golf Pride Grip Size Guide. Driver launch and spin windows: published TrackMan data. Starting flex: general industry swing-speed charts (iron bands scaled from driver bands by the typical 7-iron to driver speed ratio). Weight and tempo adjustments: ForeUnder fitter guidelines, confirmed by testing. Ball data: Garmin Approach R10.</p>
+    <p><strong>Standards used.</strong> Starting length and lie: PING Color Code Chart and PING fitting manual (each color code is 1° of lie). Grip size: Golf Pride Grip Size Guide. Driver launch and spin windows: published TrackMan data. Starting flex: general industry swing-speed charts (iron bands scaled from driver bands by the typical 7-iron to driver speed ratio). Weight and tempo adjustments: ForeUnder fitter guidelines, confirmed by testing. Ball data: Garmin Approach R10. Descent angle is estimated (the R10 does not measure it) from carry, apex, ball speed and launch, using a formula fitted to published Trackman PGA and LPGA Tour averages.</p>
     <p>The ForeUnder Fit System is built on published industry fitting standards. PING, Golf Pride, TrackMan, Garmin, Foresight Sports, GolfWorks, True Temper, Nippon and Project X are trademarks of their respective owners. ForeUnder Golf is an independent clubmaker and is not affiliated with, endorsed by or certified by these companies.</p>
   </footer>
 </div>
@@ -249,10 +249,12 @@ footer.credits strong{color:var(--ink);font-weight:600}
     height:"66", wtf:"32.5", handLen:"6.75", glove:"ML", colorStart:"Black", lenAdj:"-0.5",
     lieTest:"square", impact:"Toe", flightAgrees:"yes", tempo:"smooth",
     head:"", shaft:"", flex:"", shaftWt:"", grip:"", sw:"", notes:"Example data. Load or start a new fitting to clear.",
-    rows:[{club:"Driver",speed:"74",launch:"10.5",spin:"3600",carry:"158",side:"18"},{club:"7-iron",speed:"62",launch:"18",spin:"6100",carry:"108",side:"9"}]
+    rows:[{club:"Driver",speed:"74",ballSpeed:"104",launch:"10.5",spin:"3600",carry:"158",apex:"17",spread:"22",side:"18"},{club:"7-iron",speed:"62",ballSpeed:"80",launch:"18",spin:"6100",carry:"108",apex:"18",spread:"14",side:"9"}]
   };
 
-  function blankRows(){ return [{club:"Driver",speed:"",launch:"",spin:"",carry:"",side:""},{club:"7-iron",speed:"",launch:"",spin:"",carry:"",side:""}]; }
+  const RK = ["speed","ballSpeed","launch","spin","carry","apex","spread","side"];
+  const blankRow = club => Object.fromEntries([["club",club||""], ...RK.map(k=>[k,""])]);
+  function blankRows(){ return [blankRow("Driver"), blankRow("7-iron")]; }
 
   function renderRows(){
     const tb = $("clubRows");
@@ -261,16 +263,16 @@ footer.credits strong{color:var(--ink);font-weight:600}
       const tr = document.createElement("tr");
       tr.innerHTML =
         `<td><input id="club-${i}" aria-label="Club" value=""></td>`+
-        ["speed","launch","spin","carry","side"].map(k=>`<td><input id="${k}-${i}" type="number" step="any" inputmode="decimal" aria-label="${k}"></td>`).join("")+
+        RK.map(k=>`<td><input id="${k}-${i}" type="number" step="any" inputmode="decimal" aria-label="${k}"></td>`).join("")+
         `<td><button type="button" class="del" aria-label="Remove club" data-i="${i}">×</button></td>`;
       tb.appendChild(tr);
       $("club-"+i).value = r.club||"";
-      ["speed","launch","spin","carry","side"].forEach(k=>{ $(k+"-"+i).value = r[k]||""; });
+      RK.forEach(k=>{ $(k+"-"+i).value = r[k]||""; });
     });
   }
 
   function readRows(){
-    rows = rows.map((r,i)=>({club:$("club-"+i).value, speed:$("speed-"+i).value, launch:$("launch-"+i).value, spin:$("spin-"+i).value, carry:$("carry-"+i).value, side:$("side-"+i).value}));
+    rows = rows.map((r,i)=>Object.fromEntries([["club",$("club-"+i).value], ...RK.map(k=>[k,$(k+"-"+i).value])]));
     return rows;
   }
 
@@ -370,10 +372,22 @@ footer.credits strong{color:var(--ink);font-weight:600}
     if(!tempo) out.recs.push("Rate tempo and transition. It sets shaft weight and how firm the shaft should feel.");
     if(tempo==="aggressive") out.recs.push("Aggressive transition: lean heavier and firmer. A shaft that's too light or soft for this tempo shows up as a left miss and wide dispersion.");
     if(tempo==="smooth") out.recs.push("Smooth tempo: lean lighter. A shaft that's too heavy or stiff for this tempo shows up as low, right misses and lost carry.");
-    out.recs.push("Speeds are R10 averages (±3 mph). Final call between two candidate shafts: the tighter side dispersion wins.");
+    out.recs.push("Speeds are R10 averages (±3 mph). Final call between two candidate shafts: tightest carry spread wins, then tightest side dispersion.");
     return out;
   }
 
+  // Estimated descent (land) angle. Fitted to Trackman PGA/LPGA Tour averages (avg error ~1.4°, max ~3.3°).
+  function estDescent(r){
+    const c=num(r.carry), h=num(r.apex), b=num(r.ballSpeed), l=num(r.launch);
+    if(!c || !h || !b || !l || c<=0 || h<=0 || b<=0 || l<=0) return null;
+    return Math.round(Math.atan(6.4*(h/c)*Math.pow(130/b,0.4)*Math.pow(15/l,0.5))*180/Math.PI);
+  }
+  function descentLine(r, isDriver){
+    const a = estDescent(r); if(a===null) return null;
+    let note = isDriver ? (a<35 ? " · shallow: runs out, less carry control" : a>40 ? " · steep: ballooning, gives up roll" : " · in the 35–40° range")
+                        : (a<45 ? " · shallow: may not hold firm greens" : " · steep enough to hold greens");
+    return `~${a}° est.${note}`;
+  }
   function pill(cls, txt){ return `<span class="pill ${cls}">${esc(txt)}</span>`; }
 
   function update(){
@@ -428,7 +442,10 @@ footer.credits strong{color:var(--ink);font-weight:600}
       html += `</h4><dl class="kv"><dt>Club speed</dt><dd>${s} mph (${w.band})</dd>`;
       html += `<dt>Launch</dt><dd>${L===null?'—':L+'°'} <span style="color:var(--muted)">target ${w.l[0]}–${w.l[1]}°</span></dd>`;
       html += `<dt>Spin</dt><dd>${S===null?'—':S.toLocaleString()+' rpm'} <span style="color:var(--muted)">target ${w.sp[0].toLocaleString()}–${w.sp[1].toLocaleString()}</span></dd>`;
-      if(num(drv.carry)!==null) html += `<dt>Carry</dt><dd>${num(drv.carry)} yd${num(drv.side)!==null?' · '+num(drv.side)+' yd side':''}</dd>`;
+      if(num(drv.ballSpeed)!==null) html += `<dt>Ball speed</dt><dd>${num(drv.ballSpeed)} mph${num(drv.ballSpeed)&&s?' · smash '+(num(drv.ballSpeed)/s).toFixed(2):''}</dd>`;
+      if(num(drv.carry)!==null) html += `<dt>Carry</dt><dd>${num(drv.carry)} yd${num(drv.spread)!==null?' · '+num(drv.spread)+' yd spread':''}${num(drv.side)!==null?' · '+num(drv.side)+' yd side':''}</dd>`;
+      if(num(drv.apex)!==null) html += `<dt>Apex</dt><dd>${num(drv.apex)} yd</dd>`;
+      { const dl = descentLine(drv, true); if(dl) html += `<dt>Descent</dt><dd>${esc(dl)}</dd>`; }
       html += `<dt>Starting flex</dt><dd>${flexGuide(s)}</dd></dl>`;
       let dr = "";
       if(lState==="low" && sState!=="high") dr = "Launch is low. Add loft before changing the shaft.";
@@ -458,7 +475,8 @@ footer.credits strong{color:var(--ink);font-weight:600}
     if(others.length){
       html += `<div class="sum"><h4>Irons and others</h4><dl class="kv">`;
       others.forEach(r=>{
-        const bits = [num(r.speed)!==null?num(r.speed)+' mph':null, num(r.carry)!==null?num(r.carry)+' yd carry':null, num(r.launch)!==null?num(r.launch)+'° launch':null, num(r.spin)!==null?num(r.spin).toLocaleString()+' rpm':null].filter(Boolean);
+        const a = estDescent(r);
+        const bits = [num(r.speed)!==null?num(r.speed)+' mph':null, num(r.carry)!==null?num(r.carry)+' yd carry':null, num(r.spread)!==null?num(r.spread)+' yd spread':null, num(r.launch)!==null?num(r.launch)+'° launch':null, num(r.spin)!==null?num(r.spin).toLocaleString()+' rpm':null, num(r.apex)!==null?num(r.apex)+' yd apex':null, a!==null?'~'+a+'° descent est.'+(a<45?' (shallow)':''):null].filter(Boolean);
         html += `<dt>${esc(r.club||'Club')}</dt><dd>${esc(bits.join(' · '))}</dd>`;
       });
       html += `</dl></div>`;
@@ -503,7 +521,7 @@ footer.credits strong{color:var(--ink);font-weight:600}
     const b = e.target.closest(".del"); if(!b) return;
     readRows(); rows.splice(+b.dataset.i,1); renderRows(); update();
   });
-  $("btnAddRow").addEventListener("click", ()=>{ readRows(); rows.push({club:"",speed:"",launch:"",spin:"",carry:"",side:""}); renderRows(); $("club-"+(rows.length-1)).focus(); });
+  $("btnAddRow").addEventListener("click", ()=>{ readRows(); rows.push(blankRow("")); renderRows(); $("club-"+(rows.length-1)).focus(); });
   $("btnNew").addEventListener("click", ()=>{
     currentId = null; isExample = false;
     setData({date:new Date().toISOString().slice(0,10)});
@@ -569,6 +587,7 @@ footer.credits strong{color:var(--ink);font-weight:600}
       suggestedColor: sugg,
       driverSpeed: drvRow ? drvRow.speed : "", driverLaunch: drvRow ? drvRow.launch : "", driverSpin: drvRow ? drvRow.spin : "",
       driverWindow: win,
+      driverDescentEst: drvRow && estDescent(drvRow)!==null ? estDescent(drvRow) : "",
       summary: summaryText()
     };
     $("btnSave").disabled = true;
