@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ForeUnder Golf USA | Club Building &amp; Repairs · Omaha, NE</title>
+  <meta name="description" content="ForeUnder Golf USA is a home pro shop in Omaha, Nebraska. Regripping, reshafting, swing weighting and custom club builds by appointment. Sell, trade or donate your used clubs. Call or text (402) 350-1239.">
+  <link rel="icon" type="image/png" href="logo.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ForeUnder Golf | Club Building &amp; Repairs · Omaha, NE">
+  <meta property="og:description" content="Regrips, reshafts, swing weighting and custom builds. Sell, trade or donate used clubs. Home pro shop in Omaha, by appointment.">
+  <meta property="og:image" content="https://foreundergolfusa.com/hero.jpg">
+  <meta property="og:url" content="https://foreundergolfusa.com/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Libre+Caslon+Display&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0c1612;
+      --forest: #163029;
+      --gold: #c9a227;
+      --gold-light: #e0c36a;
+      --cream: #f7f4ef;
+      --white: #ffffff;
+      --muted: #5a6963;
+      --line: #e4dfd6;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      color: var(--ink);
+      background: var(--cream);
+      line-height: 1.6;
+      font-size: 17px;
+    }
+    h1, h2, h3 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 600; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 28px; }
+
+    /* Header */
+    header { background: var(--ink); position: sticky; top: 0; z-index: 100; }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; height: 80px; }
+    .brand img { height: 56px; width: auto; }
+    nav { display: flex; align-items: center; gap: 28px; }
+    nav a { font-size: 0.9rem; font-weight: 500; letter-spacing: 0.04em; color: rgba(255,255,255,0.8); }
+    nav a:hover { color: var(--gold-light); }
+    .phone-link {
+      background: var(--gold); color: var(--ink) !important;
+      padding: 10px 18px; font-weight: 600; font-size: 0.88rem; border-radius: 2px;
+    }
+    .phone-link:hover { background: var(--gold-light); }
+
+    /* Hero */
+    .hero {
+      position: relative; min-height: 88vh; display: flex; align-items: center; color: #fff;
+      background: var(--ink) url('hero.jpg') center/cover no-repeat;
+    }
+    .hero::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(105deg, rgba(12,22,18,0.8) 0%, rgba(12,22,18,0.42) 55%, rgba(12,22,18,0.15) 100%);
+    }
+    .hero-inner { position: relative; z-index: 1; max-width: 640px; padding-top: 100px; padding-bottom: 80px; }
+    .eyebrow {
+      font-size: 0.78rem; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--gold-light); font-weight: 600; margin-bottom: 18px;
+    }
+    .hero h1 { font-size: clamp(3rem, 6vw, 4.6rem); line-height: 0.98; margin-bottom: 22px; }
+    .hero p { font-size: 1.22rem; font-weight: 300; max-width: 500px; margin-bottom: 36px; opacity: 0.94; }
+    .actions { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn { display: inline-block; padding: 14px 28px; font-weight: 600; font-size: 0.95rem; border-radius: 2px; letter-spacing: 0.02em; }
+    .btn-gold { background: var(--gold); color: var(--ink); }
+    .btn-gold:hover { background: var(--gold-light); }
+    .btn-outline { border: 1.5px solid rgba(255,255,255,0.55); color: #fff; }
+    .btn-outline:hover { background: rgba(255,255,255,0.1); }
+
+    /* Sections */
+    section { padding: 100px 0; }
+    .sec-head { margin-bottom: 52px; }
+    .sec-head .eyebrow { color: #9a7b14; }
+    .sec-head h2 { font-size: 2.6rem; line-height: 1.1; color: var(--forest); margin-bottom: 12px; }
+    .sec-head p { color: var(--muted); max-width: 560px; font-size: 1.08rem; }
+
+    /* Services */
+    .services { background: var(--white); }
+    .svc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .svc { padding: 32px 26px; border: 1px solid var(--line); background: var(--cream); display: flex; flex-direction: column; }
+    .svc .num { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.1rem; color: #9a7b14; margin-bottom: 8px; }
+    .svc h3 { font-size: 1.4rem; color: var(--forest); margin-bottom: 10px; }
+    .svc p { color: var(--muted); font-size: 0.98rem; }
+    .svc p + p { margin-top: 10px; }
+    .note {
+      margin-top: 32px; padding: 20px 24px; border-left: 3px solid var(--gold);
+      background: var(--cream); color: var(--ink); font-size: 0.98rem; max-width: 820px;
+    }
+
+    /* Process */
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; counter-reset: s; }
+    .step { border-top: 2px solid var(--forest); padding-top: 18px; }
+    .step::before {
+      counter-increment: s; content: counter(s, decimal-leading-zero);
+      display: block; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 2rem; color: var(--gold); line-height: 1; margin-bottom: 10px;
+    }
+    .step h3 { font-size: 1.3rem; color: var(--forest); margin-bottom: 6px; }
+    .step p { color: var(--muted); font-size: 0.96rem; }
+
+    /* About */
+    .about { background: var(--white); }
+    .about-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px; align-items: center; }
+    .about-grid img { border-radius: 2px; }
+    .about-copy h3 { font-size: 2rem; line-height: 1.15; color: var(--forest); margin-bottom: 18px; }
+    .about-copy p { margin-bottom: 16px; }
+    .sig { margin-top: 22px; font-size: 0.95rem; color: var(--muted); }
+    .sig strong { color: var(--ink); display: block; font-size: 1.05rem; }
+
+    /* Gullane */
+    .gullane {
+      position: relative; color: #fff; padding: 0;
+      background:
+        linear-gradient(90deg, rgba(12,22,18,0.9) 0%, rgba(12,22,18,0.7) 45%, rgba(12,22,18,0.15) 100%),
+        url('gullane.jpg') center/cover no-repeat,
+        linear-gradient(135deg, #163029 0%, #0c1612 100%);
+    }
+    .gullane-inner { min-height: 78vh; display: flex; align-items: flex-end; padding-top: 120px; padding-bottom: 90px; }
+    .gullane-copy { max-width: 560px; }
+    .gullane h2 { font-size: clamp(2.6rem, 5vw, 3.8rem); line-height: 1.02; margin-bottom: 18px; }
+    .gullane p { font-size: 1.12rem; font-weight: 300; opacity: 0.94; margin-bottom: 14px; }
+    .gullane .credit { margin-top: 26px; font-size: 0.78rem; opacity: 0.7; }
+    .gullane .credit a { text-decoration: underline; }
+    .gullane .place { font-size: 0.82rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-light); margin-top: 22px; }
+
+    /* Roots */
+    .roots-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .root { background: var(--white); border: 1px solid var(--line); }
+    .root img { width: 100%; height: 320px; object-fit: cover; }
+    .root div { padding: 24px 26px 28px; }
+    .root h3 { font-size: 1.5rem; color: var(--forest); margin-bottom: 6px; }
+    .root p { color: var(--muted); font-size: 0.98rem; }
+
+    /* Gallery */
+    .gallery { padding: 0 0 18px; background: var(--cream); }
+    .gallery-grid { display: grid; grid-template-columns: 1fr 1.4fr 1fr; gap: 6px; }
+    .gallery-grid img { width: 100%; height: 440px; object-fit: cover; }
+    .gallery .credit { text-align: right; font-size: 0.72rem; color: var(--muted); padding: 8px 28px 0; }
+    .gallery .credit a { text-decoration: underline; }
+    @media (max-width: 760px) { .gallery-grid { grid-template-columns: 1fr; } .gallery-grid img { height: 240px; } }
+
+    /* Distribution */
+    .distro { background: var(--forest); color: #fff; }
+    .distro .sec-head .eyebrow { color: var(--gold-light); }
+    .distro .sec-head h2 { color: #fff; }
+    .distro .sec-head p { color: rgba(255,255,255,0.72); }
+    .distro-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 56px; align-items: start; }
+    .distro-copy p { margin-bottom: 16px; font-size: 1.06rem; opacity: 0.92; }
+    .distro-list { list-style: none; border-top: 1px solid rgba(255,255,255,0.18); }
+    .distro-list li { padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.18); opacity: 0.92; }
+    .distro-list li strong { color: var(--gold-light); font-weight: 500; }
+
+    /* Contact */
+    .contact-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 48px; }
+    .info-box { background: var(--ink); color: #fff; padding: 44px 40px; }
+    .info-box h3 { color: #fff; font-size: 1.5rem; margin-bottom: 22px; }
+    .info-box p { margin-bottom: 18px; opacity: 0.9; }
+    .info-box a { color: var(--gold-light); font-weight: 600; word-break: break-word; }
+    form { display: flex; flex-direction: column; gap: 14px; }
+    input, select, textarea {
+      padding: 14px 16px; border: 1px solid var(--line); background: #fff;
+      font-family: inherit; font-size: 1rem; border-radius: 2px; color: var(--ink);
+    }
+    input:focus, select:focus, textarea:focus { outline: 2px solid var(--gold); outline-offset: 0; }
+    textarea { min-height: 130px; resize: vertical; }
+    button[type="submit"] {
+      background: var(--gold); color: var(--ink); border: none; padding: 15px;
+      font-weight: 600; font-size: 1rem; cursor: pointer; border-radius: 2px; font-family: inherit;
+    }
+    button[type="submit"]:hover { background: var(--gold-light); }
+    button[disabled] { opacity: 0.6; cursor: default; }
+    .hidden { display: none; }
+
+    footer { background: var(--ink); color: rgba(255,255,255,0.6); padding: 40px 0; font-size: 0.88rem; }
+    .foot { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; align-items: center; }
+    footer strong { color: #fff; }
+    footer a { color: var(--gold-light); }
+
+    @media (max-width: 960px) {
+      .steps { grid-template-columns: 1fr 1fr; }
+      .about-grid, .contact-grid, .distro-grid, .roots-grid { grid-template-columns: 1fr; gap: 36px; }
+    }
+    @media (max-width: 760px) {
+      .header-inner { height: auto; padding: 14px 0; flex-direction: column; gap: 10px; }
+      nav { flex-wrap: wrap; justify-content: center; gap: 12px 18px; }
+      .brand img { height: 48px; }
+      .hero { min-height: 72vh; }
+      .svc-grid, .steps { grid-template-columns: 1fr; }
+      section { padding: 72px 0; }
+      .sec-head h2 { font-size: 2.2rem; }
+      .gullane-inner { min-height: 64vh; padding-top: 90px; padding-bottom: 64px; }
+      .root img { height: 240px; }
+      .info-box { padding: 32px 26px; }
+    }
+
+    /* ===== Historic Scottish typography + polish ===== */
+    body { font-family: 'EB Garamond', Garamond, Georgia, serif; font-size: 18.5px; line-height: 1.65; }
+    h1, h2, h3 { font-family: 'Libre Caslon Display', 'EB Garamond', Georgia, serif; font-weight: 400; letter-spacing: 0.005em; }
+    .eyebrow, nav a, .btn, .phone-link, button[type="submit"], .svc .num, .step::before, .sig strong, .distro-list li strong, footer strong {
+      font-family: 'EB Garamond', Garamond, Georgia, serif; font-weight: 500; font-variant-caps: all-small-caps; font-variant-numeric: lining-nums;
+    }
+    .eyebrow { font-size: 1.15rem; letter-spacing: 0.14em; text-transform: none; }
+    nav a { font-size: 1.08rem; letter-spacing: 0.06em; }
+    .phone-link { font-size: 1.02rem; letter-spacing: 0.06em; padding: 9px 20px; }
+    .btn { font-size: 1.1rem; letter-spacing: 0.08em; padding: 13px 30px; }
+    button[type="submit"] { font-size: 1.15rem; letter-spacing: 0.08em; }
+    .hero h1 { font-size: clamp(3.1rem, 6.2vw, 5rem); line-height: 1.02; }
+    .hero h1 em, .sec-head h2 em { font-style: italic; color: var(--gold-light); }
+    .hero p { font-weight: 400; font-size: 1.3rem; }
+    .sec-head h2 { font-size: 2.8rem; }
+    .sec-head h2::after { content: ''; display: block; width: 64px; height: 1px; background: var(--gold); margin-top: 18px; }
+    .sec-head p { font-size: 1.15rem; }
+    .svc { border-top: 2px solid var(--gold); transition: box-shadow .2s ease; }
+    .svc:hover { box-shadow: 0 10px 28px rgba(12,22,18,0.08); }
+    .svc .num { font-size: 1.25rem; letter-spacing: 0.1em; }
+    .svc h3 { font-size: 1.6rem; }
+    .svc p, .step p, .root p { font-size: 1.04rem; }
+    .step::before { font-size: 2.4rem; }
+    .step h3 { font-size: 1.45rem; }
+    .about-copy h3 { font-size: 2.3rem; }
+    .note { font-size: 1.04rem; font-style: italic; }
+    .note strong { font-style: normal; }
+    .info-box h3 { font-size: 1.75rem; }
+    .info-box a { font-weight: 500; }
+    input, select, textarea { font-size: 1.05rem; }
+    .gallery .credit { font-size: 0.8rem; font-style: italic; }
+    footer { font-size: 0.95rem; border-top: 1px solid rgba(201,162,39,0.35); }
+    @media (max-width: 760px) { .sec-head h2 { font-size: 2.3rem; } nav a { font-size: 1rem; } body { font-size: 17.5px; } }
+    /* Image band + heritage strip */
+    .band { position: relative; height: 62vh; min-height: 380px; background: var(--ink) url('turnberry.jpg') center 60%/cover no-repeat; }
+    .band::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(12,22,18,0.55) 0%, rgba(12,22,18,0) 40%); }
+    .band-cap { position: absolute; left: 0; right: 0; bottom: 34px; z-index: 1; text-align: center; color: #fff; font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-size: 1.5rem; letter-spacing: 0.04em; }
+    .band-credit { position: absolute; right: 14px; bottom: 8px; z-index: 1; color: rgba(255,255,255,0.7); font-size: 0.72rem; font-style: italic; }
+    .band-credit a { text-decoration: underline; }
+    .gallery-2 { padding: 18px 0; background: var(--cream); }
+    .gallery-2 .gallery-grid { grid-template-columns: 1fr 1fr 1fr; }
+    .gallery-2 figure { position: relative; margin: 0; overflow: hidden; }
+    .gallery-2 img { height: 380px; transition: transform .6s ease; }
+    .gallery-2 figure:hover img { transform: scale(1.04); }
+    .gallery-2 figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 18px 14px; color: #fff; font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-size: 1.15rem; background: linear-gradient(0deg, rgba(12,22,18,0.75), rgba(12,22,18,0)); }
+    @media (max-width: 760px) { .band { height: 46vh; min-height: 300px; } .gallery-2 .gallery-grid { grid-template-columns: 1fr; } .gallery-2 img { height: 240px; } }
+    .band-kb { background-image: url('kingsbarns.jpg'); background-position: center 55%; }
+    /* Bigger logo */
+    html { scroll-padding-top: 124px; }
+    .header-inner { height: 124px; }
+    .brand img { height: 104px; }
+    @media (max-width: 760px) { .header-inner { height: auto; } .brand img { height: 70px; } html { scroll-padding-top: 170px; } }
+
+    /* ===== Sell, Trade or Donate ===== */
+    .sell { background: var(--white); }
+    .opt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 56px; }
+    .opt { padding: 30px 26px; border: 1px solid var(--line); border-top: 2px solid var(--gold); background: var(--cream); }
+    .opt h3 { font-size: 1.6rem; color: var(--forest); margin-bottom: 10px; }
+    .opt p { color: var(--muted); font-size: 1.04rem; }
+    .opt p + p { margin-top: 10px; }
+    .sell .steps { margin-bottom: 56px; }
+    .sell-form { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 48px; align-items: start; }
+    .sell fieldset { border: none; display: flex; flex-direction: column; gap: 12px; }
+    .sell legend { font-family: 'Libre Caslon Display', Georgia, serif; font-size: 1.35rem; color: var(--forest); margin-bottom: 6px; }
+    .sell .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .sell input, .sell select, .sell textarea { width: 100%; }
+    .sell textarea { min-height: 110px; }
+    .sell input[type="file"] { padding: 10px; background: var(--cream); }
+    .sell label.lbl { font-size: 0.98rem; color: var(--muted); display: block; margin-bottom: 4px; }
+    .sell .hint { font-size: 0.95rem; color: var(--muted); font-style: italic; }
+    .sell .check { display: flex; gap: 10px; align-items: flex-start; font-size: 1.02rem; }
+    .sell .check input { width: auto; margin-top: 6px; }
+    .status { padding: 14px 16px; border-left: 3px solid var(--forest); background: var(--cream); }
+    .status.err { border-left-color: #9b2c2c; color: #9b2c2c; }
+    .paused { padding: 30px 28px; border: 1px solid var(--line); border-top: 2px solid var(--gold); background: var(--cream); }
+    .paused h3 { color: var(--forest); font-size: 1.6rem; margin-bottom: 10px; }
+    @media (max-width: 960px) { .opt-grid, .sell-form { grid-template-columns: 1fr; gap: 28px; } }
+    @media (max-width: 760px) { .sell .row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<!--
+  SELL / TRADE / DONATE SWITCH (one word, then redeploy):
+    data-sell="donate"  = donations only (current setting)
+    data-sell="yes"     = sell, trade for credit, and donate
+    data-sell="no"      = form hidden, "not taking clubs right now" note
+-->
+<body data-sell="donate">
+  <header>
+    <div class="wrap header-inner">
+      <a href="#top" class="brand"><img src="logo.png" alt="ForeUnder Golf USA"></a>
+      <nav>
+        <a href="#services">Services</a>
+        <a href="#process">How It Works</a>
+        <a href="#sell" class="sell-nav">Sell or Donate</a>
+        <a href="#about">About</a>
+        <a href="#distribution">Distribution</a>
+        <a href="#contact">Contact</a>
+        <a href="tel:4023501239" class="phone-link">Call/Text (402) 350-1239</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" id="top">
+    <div class="wrap hero-inner">
+      <div class="eyebrow">Home Pro Shop · Omaha, Nebraska</div>
+      <h1>Club Building<br>&amp; Repairs</h1>
+      <p>Regrips, reshafts, swing weighting and custom builds, done by hand and built to your specs or the factory&rsquo;s. Arizona roots, Scotland in the heart.</p>
+      <div class="actions">
+        <a href="#contact" class="btn btn-gold">Schedule Work</a>
+        <a href="#sell" class="btn btn-outline sell-nav">Sell or Donate Clubs</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="services">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">Services</div>
+        <h2>Built to spec. Measured before it leaves.</h2>
+        <p>Regrips, reshafts, swing weighting and full custom builds. Every club is measured on the bench and checked against its specs before it goes back in your bag.</p>
+      </div>
+      <div class="svc-grid">
+        <div class="svc">
+          <div class="num">01</div>
+          <h3>Regripping</h3>
+          <p>Old grips and tape fully stripped, then new grips installed straight and aligned on every club. Grip size is set with build-up tape, from standard to midsize and beyond, to fit your hands.</p>
+          <p>Bring your own grips, or we&rsquo;ll order from Golf Pride, Lamkin, SuperStroke and others. Solvent-installed grips set overnight, so plan on next-day pickup.</p>
+        </div>
+        <div class="svc">
+          <div class="num">02</div>
+          <h3>Shaft Work</h3>
+          <p>Steel and graphite shafts removed without damaging the head, using heat and a shaft puller on graphite. The hosel is cleaned, the new shaft is prepped and epoxied, and a fresh ferrule goes on.</p>
+          <p>Cut-downs and extensions are measured to an exact finished length, and swing weight is rechecked afterward. Epoxy cures overnight, so shaft work is ready the next day.</p>
+        </div>
+        <div class="svc">
+          <div class="num">03</div>
+          <h3>Swing Weighting</h3>
+          <p>Swing weight is how heavy a club feels when you swing it, measured on a letter-and-number scale. Most men&rsquo;s clubs fall around D0 to D3.</p>
+          <p>Every club is measured on a swingweight scale and built to the right target for its place in the bag. Clubs that fall outside the progression are brought back in line. Shafts, length and grip weight all change swing weight, so it&rsquo;s checked on every job.</p>
+        </div>
+        <div class="svc">
+          <div class="num">04</div>
+          <h3>Custom Builds</h3>
+          <p>Every build starts with a spec sheet: length, swing weight, grip size and shaft for each club, taken from your fitting or the manufacturer&rsquo;s standard.</p>
+          <p>Heads, shafts and grips are dry-fit and checked before anything is glued, then measured against the sheet when finished. You get the build sheet with your clubs. Bring your own components or we&rsquo;ll source them.</p>
+        </div>
+      </div>
+      <p class="note"><strong>About specs:</strong> without a fitting, we generally build to the manufacturer&rsquo;s specs. Have specs from a fitting? We&rsquo;ll build to them exactly. Thinking about changing length, grip size or shafts? We&rsquo;re happy to talk it through with you.</p>
+    </div>
+  </section>
+
+  <div class="band" role="img" aria-label="Turnberry lighthouse and links at sunset, Ayrshire, Scotland">
+    <p class="band-cap">Turnberry, Ayrshire</p>
+    <p class="band-credit">Photo: <a href="https://commons.wikimedia.org/wiki/File:Turnberry_Lighthouse_(29972057257).jpg" target="_blank" rel="noopener">Ian Dick</a>, <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener">CC BY 2.0</a></p>
+  </div>
+
+  <section id="process">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">How It Works</div>
+        <h2>Simple, by appointment</h2>
+        <p>No storefront and no waiting in line. One person handles your clubs from start to finish.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <h3>Reach out</h3>
+          <p>Call, text or send the form. Tell us what we can do to help.</p>
+        </div>
+        <div class="step">
+          <h3>Get a quote</h3>
+          <p>Every job is quoted up front, before any work starts.</p>
+        </div>
+        <div class="step">
+          <h3>Drop off</h3>
+          <p>Bring your clubs to the shop at a time that works for you.</p>
+        </div>
+        <div class="step">
+          <h3>Pick up and play</h3>
+          <p>We&rsquo;ll let you know when they&rsquo;re ready to go back in the bag.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gallery gallery-2" aria-label="Clubmaking heritage">
+    <div class="gallery-grid">
+      <figure><img src="tommorris.jpg" alt="Tom Morris Golf Shop, St Andrews"><figcaption>Tom Morris Golf Shop, St Andrews</figcaption></figure>
+      <figure><img src="oldcourse.jpg" alt="The 18th at the Old Course with the R&amp;A clubhouse"><figcaption>The Old Course, St Andrews</figcaption></figure>
+      <figure><img src="clubwall.jpg" alt="Wall of classic golf clubs"><figcaption>The craft, a club at a time</figcaption></figure>
+    </div>
+    <p class="credit">Photos: <a href="https://commons.wikimedia.org/wiki/File:The_Tom_Morris_Golf_Shop_(3599053334).jpg" target="_blank" rel="noopener">Tom Morris Golf Shop</a> and <a href="https://commons.wikimedia.org/wiki/File:Royal_%26_Ancient_3_(3637975535).jpg" target="_blank" rel="noopener">Old Course</a> by Son of Groucho; <a href="https://commons.wikimedia.org/wiki/File:Golf_Club_Collection_(51839346980).jpg" target="_blank" rel="noopener">club collection</a> by Eric Friedebach; all <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener">CC BY 2.0</a></p>
+  </section>
+
+  <section id="sell" class="sell">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow" id="sell-eyebrow">Sell, Trade or Donate</div>
+        <h2 id="sell-title">Old clubs? Put them back in play.</h2>
+        <p id="sell-intro">Send photos and details online. Nobody has to meet until there&rsquo;s a deal, and if the offer doesn&rsquo;t work for you, that&rsquo;s the end of it.</p>
+      </div>
+
+      <div class="opt-grid">
+        <div class="opt buy-only">
+          <h3>Sell for cash</h3>
+          <p>Get a cash offer based on what your clubs actually sell for. Paid by cash, Venmo or Zelle at the handoff.</p>
+        </div>
+        <div class="opt buy-only">
+          <h3>Trade for shop credit</h3>
+          <p>Shop credit is worth more than the cash offer. Use it for regrips, shaft work, swing weighting or a custom build.</p>
+        </div>
+        <div class="opt buy-only">
+          <h3>Donate</h3>
+          <p>Clubs you&rsquo;d rather give away get cleaned up, regripped and built into starter sets for new golfers at a price anyone can afford.</p>
+        </div>
+        <div class="opt donate-only">
+          <h3>Every club counts</h3>
+          <p>A full set, a few irons, a lone putter, the junior clubs your kids outgrew, or a bag that hasn&rsquo;t left the garage in years. We&rsquo;ll take all of it.</p>
+        </div>
+        <div class="opt donate-only">
+          <h3>Rebuilt by hand</h3>
+          <p>Every club is cleaned, regripped and checked on the bench, then matched with others into a complete set that&rsquo;s ready to play.</p>
+        </div>
+        <div class="opt donate-only">
+          <h3>Into new hands</h3>
+          <p>Those sets go to people just starting out (kids, families, adults picking up the game for the first time) at a price anyone can afford.</p>
+        </div>
+      </div>
+
+      <div class="steps donate-only">
+        <div class="step">
+          <h3>Let us know</h3>
+          <p>Send the short form below, or just call or text. No list or details needed.</p>
+        </div>
+        <div class="step">
+          <h3>Drop off or pick up</h3>
+          <p>Bring them by, or we&rsquo;ll come get them anywhere in the Omaha area.</p>
+        </div>
+        <div class="step">
+          <h3>We rebuild them</h3>
+          <p>Cleaned, regripped and built into a complete set at the shop.</p>
+        </div>
+        <div class="step">
+          <h3>Someone new tees it up</h3>
+          <p>Your clubs help a new golfer get started, and the game picks up one more player.</p>
+        </div>
+      </div>
+
+      <div class="steps buy-only">
+        <div class="step">
+          <h3>Send the details</h3>
+          <p>Fill out the form with a few photos. Any brand, any condition. Full sets, partial sets and single clubs are all welcome.</p>
+        </div>
+        <div class="step">
+          <h3>Get your offer</h3>
+          <p>We reply with an offer, usually within one to two days. Donations get a time to drop off.</p>
+        </div>
+        <div class="step">
+          <h3>Pick a time</h3>
+          <p>Accept, and we set up a quick handoff in the Omaha area at a time that works for you.</p>
+        </div>
+        <div class="step">
+          <h3>Done</h3>
+          <p>We check the clubs match the photos, then pay you or load your shop credit on the spot.</p>
+        </div>
+      </div>
+
+      <div class="sell-form">
+        <div class="info-box">
+          <h3>Good to know</h3>
+          <p class="buy-only">Offers are based on recent sold prices for the same model and condition, and are final once the clubs match the photos.</p>
+          <p class="buy-only">Some clubs, like beginner sets, are worth more as donations than as sales. We&rsquo;ll tell you honestly.</p>
+          <p class="donate-only">Golf has given a lot of us a lifetime of friends, stories and early mornings. For a lot of people, the only thing standing between them and the first tee is a set of clubs.</p>
+          <p class="donate-only">Nothing goes to waste. Clubs that can&rsquo;t be played become parts that keep another set going.</p>
+          <p class="donate-only">ForeUnder Golf is a small business, not a charity, so donations aren&rsquo;t tax-deductible. Need a receipt? Call us and we&rsquo;ll point you to a local charity that takes clubs.</p>
+          <p>Questions? Call or text <a href="tel:4023501239">(402) 350-1239</a>.</p>
+        </div>
+
+        <div>
+          <div id="sell-paused" class="paused hidden">
+            <h3>We&rsquo;re not taking clubs right now</h3>
+            <p>Check back soon, or call or text (402) 350-1239 if you have something special.</p>
+          </div>
+
+          <form id="tf" name="trade-in" method="POST" action="/" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="trade-in">
+            <p class="hidden"><label>Leave this empty: <input name="bot-field"></label></p>
+
+            <fieldset>
+              <legend>How can I help?</legend>
+              <select name="intent" id="intent" required>
+                <option value="">Choose one</option>
+                <option class="buy-only">Sell for cash</option>
+                <option class="buy-only">Trade for shop credit</option>
+                <option class="buy-only">Show me cash and credit offers</option>
+                <option>Donate</option>
+              </select>
+            </fieldset>
+
+            <fieldset>
+              <legend>You</legend>
+              <div class="row">
+                <input type="text" name="name" placeholder="Name" autocomplete="name" required>
+                <input type="tel" name="phone" placeholder="Phone" autocomplete="tel" required>
+              </div>
+              <div class="row">
+                <input type="email" name="email" placeholder="Email" autocomplete="email" required>
+                <input type="text" name="zip" placeholder="ZIP code" inputmode="numeric" pattern="[0-9]{5}" autocomplete="postal-code" required>
+              </div>
+            </fieldset>
+
+            <fieldset class="donate-only">
+              <legend>Your clubs</legend>
+              <select name="handoff" required>
+                <option value="">Drop off or pick up?</option>
+                <option>I&rsquo;ll drop them off</option>
+                <option>Please pick them up</option>
+              </select>
+              <textarea name="donation_notes" placeholder="Anything we should know? (optional) A rough idea of what you have, best times to reach you, etc."></textarea>
+            </fieldset>
+
+            <fieldset class="buy-only">
+              <legend>The clubs</legend>
+              <div class="row">
+                <select name="item_type" required>
+                  <option value="">What kind of clubs?</option>
+                  <option>Full iron set</option>
+                  <option>Complete set (woods, irons, putter)</option>
+                  <option>Partial set</option>
+                  <option>Heads only (no shafts)</option>
+                  <option>Wedges</option>
+                  <option>Driver, fairway or hybrid</option>
+                  <option>Putter</option>
+                  <option>Bag of mixed clubs</option>
+                  <option>Other</option>
+                </select>
+                <select name="hand" required>
+                  <option value="">Right- or left-handed?</option>
+                  <option>Right-handed</option>
+                  <option>Left-handed</option>
+                  <option>Mixed / not sure</option>
+                </select>
+              </div>
+              <div class="row">
+                <input type="text" name="brand_model" placeholder="Brand and model (or &quot;not sure&quot;)" required>
+                <input type="text" name="year" placeholder="Year, if you know it">
+              </div>
+              <div class="row">
+                <input type="text" name="set_makeup" placeholder="Clubs included (e.g. 4-PW)">
+                <input type="text" name="shaft" placeholder="Shaft and flex (e.g. steel stiff)">
+              </div>
+              <div class="row">
+                <select name="condition" required>
+                  <option value="">Overall condition</option>
+                  <option>Like new: barely used</option>
+                  <option>Good: normal wear</option>
+                  <option>Fair: heavy wear, worn grips</option>
+                  <option>Rough: needs work</option>
+                </select>
+                <select name="who_for">
+                  <option value="">Men's, women's or junior?</option>
+                  <option>Men's</option>
+                  <option>Women's</option>
+                  <option>Junior</option>
+                </select>
+              </div>
+              <textarea name="notes" placeholder="Anything else? Bag included, headcovers, missing clubs, length or lie changes..."></textarea>
+            </fieldset>
+
+            <fieldset class="buy-only">
+              <legend>Photos</legend>
+              <p class="hint buy-only">Faces and soles are required for a cash or credit offer. Phone photos are fine; they&rsquo;re resized automatically.</p>
+              <div><label class="lbl" for="p1">Faces (all clubs, straight on)</label><input id="p1" type="file" name="photo_faces" accept="image/*"></div>
+              <div><label class="lbl" for="p2">Soles (bottoms of the clubs)</label><input id="p2" type="file" name="photo_soles" accept="image/*"></div>
+              <div><label class="lbl" for="p3">Shaft labels / bands</label><input id="p3" type="file" name="photo_shafts" accept="image/*"></div>
+              <div><label class="lbl" for="p4">Grips or the whole bag</label><input id="p4" type="file" name="photo_grips" accept="image/*"></div>
+            </fieldset>
+
+            <label class="check buy-only"><input type="checkbox" name="owner_confirm" value="yes" required> <span>I own these clubs and have the right to sell or give them away. I understand any offer depends on the clubs matching the photos.</span></label>
+            <label class="check donate-only"><input type="checkbox" name="owner_confirm" value="yes" required> <span>These clubs are mine to give.</span></label>
+
+            <button type="submit">Send</button>
+            <p id="tf-ok" class="status hidden">Got it. You&rsquo;ll hear back by text or email, usually within one to two days.</p>
+            <p id="tf-bad" class="status err hidden">That didn&rsquo;t go through. Please try again, or call or text (402) 350-1239.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="about">
+    <div class="wrap">
+      <div class="about-grid">
+        <img src="n6d0u.jpg" alt="The ForeUnder Golf workshop bench with irons and tools">
+        <div class="about-copy">
+          <div class="eyebrow" style="color:#9a7b14;">About</div>
+          <h3>A small shop that does the work properly.</h3>
+          <p>ForeUnder Golf USA is a home-based pro shop in Omaha. I&rsquo;ve been building and repairing golf clubs for more than 30 years, starting long before big-box golf stores and online component shops.</p>
+          <p>The approach hasn&rsquo;t changed: measure everything, build to spec, and treat every club like it&rsquo;s going in my own bag. Whether it&rsquo;s one grip or a full set, it gets the same attention.</p>
+          <div class="sig"><strong>Jamey Conrad</strong>Founder &amp; Chief Golf Officer</div>
+          <div class="actions" style="margin-top:28px;">
+            <a href="#contact" class="btn btn-gold">Schedule Work</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gallery" aria-label="Scotland and Arizona golf">
+    <div class="gallery-grid">
+      <img src="standrews.jpg" alt="Swilcan Bridge on the Old Course at St Andrews, Scotland">
+      <img src="gullane.jpg" alt="Golfers on a links tee above the Firth of Forth at Gullane, Scotland">
+      <img src="arizona.jpg" alt="Desert golf hole below red rock mountains in Arizona">
+    </div>
+    <p class="credit">Photos: <a href="https://commons.wikimedia.org/wiki/File:Swilken_Bridge,_Old_Course_geograph-6310525-by-Gordon-Hatton.jpg" target="_blank" rel="noopener">St Andrews</a> by Gordon Hatton and <a href="https://commons.wikimedia.org/wiki/File:Golfers_on_Gullane_Hill_-_geograph.org.uk_-_7613181.jpg" target="_blank" rel="noopener">Gullane</a> by Jim Barton, both <a href="https://creativecommons.org/licenses/by-sa/2.0/" target="_blank" rel="noopener">CC BY-SA 2.0</a></p>
+  </section>
+
+  <section id="distribution" class="distro">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Distribution</h2>
+        <p>ForeUnder Golf has the capability to distribute golf clubs, components and equipment, from any manufacturer.</p>
+      </div>
+      <div class="distro-grid">
+        <div class="distro-copy">
+          <p>If you make golf equipment and need a distribution partner, or you run a shop or club and need product, we can help.</p>
+          <a href="#contact" class="btn btn-gold" style="margin-top: 10px;">Talk Distribution</a>
+        </div>
+        <ul class="distro-list">
+          <li><strong>Manufacturers:</strong> a distribution partner for your clubs, components and accessories</li>
+          <li><strong>Shops and clubs:</strong> a supplier for the equipment you want to carry</li>
+          <li><strong>Golfers:</strong> builds using the components you choose</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="band band-kb" role="img" aria-label="Dunes and sea at Kingsbarns, Fife, Scotland">
+    <p class="band-cap">Kingsbarns, Fife</p>
+    <p class="band-credit">Photo: <a href="https://commons.wikimedia.org/wiki/File:Part_of_Kingsbarns_golf_course_-_geograph.org.uk_-_2276216.jpg" target="_blank" rel="noopener">James Allan</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/" target="_blank" rel="noopener">CC BY-SA 2.0</a></p>
+  </div>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">Contact</div>
+        <h2>Let&rsquo;s talk about your clubs</h2>
+        <p>Repairs, builds or distribution: call, text, email or send a note.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="info-box">
+          <h3>Details</h3>
+          <p><strong>Call or text</strong><br><a href="tel:4023501239">(402) 350-1239</a></p>
+          <p><strong>Email</strong><br><a href="mailto:jamey@foreundergolfusa.com">jamey@foreundergolfusa.com</a></p>
+          <p><strong>Shop</strong><br>Home pro shop, Omaha, NE<br>By appointment only</p>
+        </div>
+        <form action='/' id='f' method='POST' name='contact' data-netlify="true" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="contact">
+          <p class="hidden"><label>Leave this empty: <input name="bot-field"></label></p>
+          <input type="text" name="name" placeholder="Name" autocomplete="name" required>
+          <input type="email" name="email" placeholder="Email" autocomplete="email" required>
+          <input type="tel" name="phone" placeholder="Phone (optional)" autocomplete="tel">
+          <select name="service" required>
+            <option value="">How can I help?</option>
+            <option>Regripping</option>
+            <option>Shaft work</option>
+            <option>Swing weighting</option>
+            <option>Custom build</option>
+            <option>Distribution</option>
+            <option>Other</option>
+          </select>
+          <textarea name="message" placeholder="Tell me a little about your clubs and how I can help..." required></textarea>
+          <button type="submit">Send</button>
+          <p id="msg" class="hidden" style="color: var(--forest);">Received. We&rsquo;ll reply shortly. Call or text if it&rsquo;s urgent.</p>
+          <p id="err" class="hidden" style="color: #9b2c2c;">That didn&rsquo;t go through. Please call or text (402) 350-1239.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap foot">
+      <div><strong>ForeUnder Golf USA</strong> · Omaha, Nebraska · <a href="tel:4023501239">(402) 350-1239</a></div>
+      <div>&copy; 2026 Aksarben In-Home Solutions LLC, dba ForeUnder Golf</div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('f').onsubmit = function(e) {
+      e.preventDefault();
+      var form = this, btn = form.querySelector('button[type="submit"]');
+      var ok = document.getElementById('msg'), err = document.getElementById('err');
+      ok.classList.add('hidden'); err.classList.add('hidden');
+      btn.disabled = true; btn.textContent = 'Sending...';
+      var data = new FormData(form);
+      // 1) Netlify Forms: keeps a copy of every message in the Netlify dashboard
+      var toNetlify = fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(data).toString()
+      }).then(function(r) { if (!r.ok) throw new Error(r.status); });
+      // 2) Web3Forms (free): emails the message to jamey@foreundergolfusa.com
+      var w = {
+        access_key: 'e52cc4cf-19f5-41fb-a34c-6169e3aed736',
+        subject: 'New ForeUnder Golf inquiry: ' + (data.get('service') || ''),
+        from_name: 'ForeUnder Golf website',
+        botcheck: data.get('bot-field') || '',
+        name: data.get('name'), email: data.get('email'), phone: data.get('phone'),
+        service: data.get('service'), message: data.get('message')
+      };
+      var toEmail = fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(w)
+      }).then(function(r) { return r.json(); }).then(function(j) { if (!j.success) throw new Error(j.message); });
+      Promise.allSettled([toNetlify, toEmail]).then(function(res) {
+        if (res[0].status === 'rejected' && res[1].status === 'rejected') throw new Error('both failed');
+        ok.classList.remove('hidden');
+        form.reset();
+      }).catch(function() {
+        err.classList.remove('hidden');
+      }).finally(function() {
+        btn.disabled = false; btn.textContent = 'Send';
+      });
+    };
+
+    /* ===== Sell, Trade or Donate form ===== */
+    (function() {
+      var mode = document.body.dataset.sell;
+      var hideAll = function(sel) { document.querySelectorAll(sel).forEach(function(el) { el.remove(); }); };
+      if (mode === 'donate') {
+        hideAll('.buy-only');
+        document.getElementById('sell-eyebrow').textContent = 'Give Clubs, Grow the Game';
+        document.getElementById('sell-title').textContent = 'Your clubs can start someone\u2019s game.';
+        document.getElementById('sell-intro').textContent = 'Most people who never take up golf don\u2019t walk away from the game. They walk away from the cost of getting started. Whatever clubs you have, we\u2019ll rebuild them and put them in the hands of someone who\u2019s ready to begin.';
+        var em = document.querySelector('#tf input[name="email"]'); em.required = false; em.placeholder = 'Email (optional)';
+        document.querySelector('.sell-form .info-box h3').textContent = 'Why we do this';
+        document.querySelectorAll('.sell-nav').forEach(function(a) { a.textContent = a.classList.contains('btn') ? 'Donate Clubs' : 'Donate Clubs'; });
+        var sel = document.getElementById('intent');
+        sel.value = 'Donate';
+        sel.closest('fieldset').classList.add('hidden');
+        document.querySelector('#tf button[type="submit"]').textContent = 'Send';
+      } else {
+        hideAll('.donate-only');
+      }
+      if (mode !== 'yes' && mode !== 'donate') {
+        document.getElementById('tf').classList.add('hidden');
+        document.getElementById('sell-paused').classList.remove('hidden');
+      }
+    })();
+
+    // Shrink phone photos so each submission stays small on Netlify's free plan
+    function shrink(file) {
+      return new Promise(function(resolve) {
+        if (!file || !file.type || file.type.indexOf('image/') !== 0) return resolve(file);
+        var img = new Image(), url = URL.createObjectURL(file);
+        img.onload = function() {
+          var max = 1200, w = img.naturalWidth, h = img.naturalHeight;
+          var s = Math.min(1, max / Math.max(w, h));
+          var c = document.createElement('canvas');
+          c.width = Math.round(w * s); c.height = Math.round(h * s);
+          c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+          URL.revokeObjectURL(url);
+          c.toBlob(function(b) {
+            resolve(b ? new File([b], (file.name || 'photo').replace(/\.[^.]+$/, '') + '.jpg', { type: 'image/jpeg' }) : file);
+          }, 'image/jpeg', 0.72);
+        };
+        img.onerror = function() { URL.revokeObjectURL(url); resolve(file); };
+        img.src = url;
+      });
+    }
+
+    document.getElementById('tf').onsubmit = function(e) {
+      e.preventDefault();
+      var form = this, btn = form.querySelector('button[type="submit"]');
+      var ok = document.getElementById('tf-ok'), bad = document.getElementById('tf-bad');
+      ok.classList.add('hidden'); bad.classList.add('hidden');
+
+      var data = new FormData(form);
+      var donating = data.get('intent') === 'Donate';
+      var has = function(f) { var x = data.get(f); return x && x.size; };
+      if (!donating && (!has('photo_faces') || !has('photo_soles'))) {
+        bad.textContent = 'For a cash or credit offer, please add photos of the faces and the soles.';
+        bad.classList.remove('hidden');
+        return;
+      }
+      bad.textContent = 'That didn’t go through. Please try again, or call or text (402) 350-1239.';
+      btn.disabled = true; btn.textContent = 'Sending...';
+
+      var photoFields = ['photo_faces', 'photo_soles', 'photo_shafts', 'photo_grips'];
+      Promise.all(photoFields.map(function(f) {
+        var file = data.get(f);
+        if (!file || !file.size) { data.delete(f); return null; }
+        return shrink(file).then(function(small) { data.set(f, small, small.name); });
+      })).then(function() {
+        // 1) Netlify Forms: stores the details and photos in the Netlify dashboard
+        var toNetlify = fetch('/', { method: 'POST', body: data })
+          .then(function(r) { if (!r.ok) throw new Error(r.status); });
+        // 2) Web3Forms: emails the details (not the photos) to jamey@foreundergolfusa.com
+        var w = {
+          access_key: 'e52cc4cf-19f5-41fb-a34c-6169e3aed736',
+          subject: data.get('intent') === 'Donate' ? 'Club donation: ' + (data.get('name') || '') + ' (' + (data.get('handoff') || '') + ')' : (data.get('intent') || 'Clubs') + ': ' + (data.get('brand_model') || '') + ' ' + (data.get('set_makeup') || ''),
+          from_name: 'ForeUnder Golf website',
+          botcheck: data.get('bot-field') || '',
+          intent: data.get('intent'), name: data.get('name'), phone: data.get('phone'), email: data.get('email'), zip: data.get('zip'),
+          item_type: data.get('item_type'), hand: data.get('hand'), who_for: data.get('who_for'),
+          brand_model: data.get('brand_model'), year: data.get('year'), set_makeup: data.get('set_makeup'),
+          shaft: data.get('shaft'), condition: data.get('condition'), notes: data.get('notes'),
+          handoff: data.get('handoff'), donation_notes: data.get('donation_notes'),
+          photos: 'In Netlify: Forms > trade-in.'
+        };
+        var toEmail = fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(w)
+        }).then(function(r) { return r.json(); }).then(function(j) { if (!j.success) throw new Error(j.message); });
+        return Promise.allSettled([toNetlify, toEmail]);
+      }).then(function(res) {
+        if (res[0].status === 'rejected' && res[1].status === 'rejected') throw new Error('both failed');
+        ok.classList.remove('hidden');
+        form.reset();
+      }).catch(function() {
+        bad.classList.remove('hidden');
+      }).finally(function() {
+        btn.disabled = false; btn.textContent = 'Send';
+      });
+    };
+  </script>
+</body>
+</html>

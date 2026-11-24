@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>ForeUnder Fit | ForeUnder Golf</title>
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=EB+Garamond:ital,wght@0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: two-column workbench — the fitting form on the left, a live spec card pinned on the right; stacks on phones. */
+:root{
+  --paper:#f3f0e8; --card:#fbfaf6; --ink:#1d2621; --muted:#5d6a62; --line:#d9d4c6;
+  --green:#1f4a36; --green-soft:#e2ebe4; --heather:#7b5874; --heather-soft:#efe6ed;
+  --good:#2f7a4b; --warn:#a8681c; --bad:#a63d32;
+  --f-display:"Libre Caslon Display", Georgia, serif;
+  --f-label:"EB Garamond", Georgia, serif;
+  --f-body:"Inter", system-ui, -apple-system, Segoe UI, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#131815; --card:#1a201c; --ink:#e9ece6; --muted:#9aa79f; --line:#2f3a33;
+  --green:#8cc4a3; --green-soft:#1f2e26; --heather:#c9a3c1; --heather-soft:#2c2230;
+  --good:#7fcb98; --warn:#e3a95a; --bad:#ec8a7e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#131815; --card:#1a201c; --ink:#e9ece6; --muted:#9aa79f; --line:#2f3a33;
+  --green:#8cc4a3; --green-soft:#1f2e26; --heather:#c9a3c1; --heather-soft:#2c2230;
+  --good:#7fcb98; --warn:#e3a95a; --bad:#ec8a7e; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.5}
+.wrap{max-width:1180px;margin:0 auto;padding-block:28px 48px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:22px}
+.brand h1{font-family:var(--f-display);font-weight:400;font-size:clamp(30px,5vw,42px);line-height:1;margin:0;color:var(--green);letter-spacing:.01em}
+.brand p{margin:6px 0 0;font-family:var(--f-label);font-style:italic;color:var(--muted);font-size:17px}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+button{font:500 13px var(--f-body);border-radius:6px;padding:8px 14px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+button.primary{background:var(--green);border-color:var(--green);color:var(--card)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--heather);outline-offset:2px}
+button:disabled{opacity:.5;cursor:default}
+.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:1fr}}
+section.step{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px;margin-bottom:16px}
+.step h2{display:flex;gap:10px;align-items:baseline;margin:0 0 4px;font-family:var(--f-label);font-weight:600;font-size:21px}
+.step h2 .n{font-family:var(--f-body);font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--heather);text-transform:uppercase}
+.step .hint{margin:0 0 14px;color:var(--muted);font-size:13px}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+label{display:flex;flex-direction:column;gap:4px;font-family:var(--f-label);font-size:15px;font-variant-caps:all-small-caps;letter-spacing:.04em;color:var(--muted)}
+input,select,textarea{font:400 14px var(--f-body);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:8px 10px;width:100%;min-width:0;font-variant-numeric:tabular-nums}
+textarea{min-height:64px;resize:vertical}
+.wide{grid-column:1/-1}
+.tblwrap{overflow-x:auto;margin-top:4px}
+table{border-collapse:collapse;width:100%;min-width:620px;font-variant-numeric:tabular-nums}
+th{font-family:var(--f-label);font-weight:500;font-variant-caps:all-small-caps;letter-spacing:.04em;color:var(--muted);text-align:left;font-size:14px;padding:4px 6px;border-bottom:1px solid var(--line)}
+td{padding:4px 6px;border-bottom:1px solid var(--line)}
+td input,td select{padding:6px 8px}
+.rowbtn{margin-top:10px}
+.del{border:none;background:none;color:var(--muted);font-size:16px;padding:4px 8px}
+/* summary card */
+aside{position:sticky;top:calc(env(safe-area-inset-top, 0px) + 16px)}
+@media (max-width:860px){aside{position:static}}
+.card{background:var(--card);border:1px solid var(--green);border-radius:8px;overflow:hidden}
+.card .head{background:var(--green);color:var(--card);padding:16px 18px}
+.card .head .eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+.card .head h3{font-family:var(--f-display);font-weight:400;font-size:26px;margin:4px 0 2px;line-height:1.1}
+.card .head .meta{font-size:12.5px;opacity:.9}
+.card .body{padding:6px 18px 16px}
+.sum{padding:12px 0;border-bottom:1px solid var(--line)}
+.sum:last-child{border-bottom:none}
+.sum h4{margin:0 0 6px;font-family:var(--f-label);font-weight:600;font-size:17px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:13px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;font-weight:500;font-variant-numeric:tabular-nums}
+.pill{font:600 11px var(--f-body);letter-spacing:.03em;padding:3px 8px;border-radius:999px;white-space:nowrap}
+.pill.good{background:color-mix(in srgb,var(--good) 16%,transparent);color:var(--good)}
+.pill.warn{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)}
+.pill.bad{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
+.pill.idle{background:var(--heather-soft);color:var(--heather)}
+.rec{margin:8px 0 0;padding:8px 10px;background:var(--green-soft);border-radius:6px;font-size:13px}
+.empty{color:var(--muted);font-size:13px;font-style:italic}
+.cardfoot{display:flex;gap:8px;flex-wrap:wrap;padding:0 18px 16px}
+.status{font-size:12.5px;color:var(--muted);min-height:18px;margin-top:8px}
+.saved{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 18px}
+.saved h4{margin:0 0 8px;font-family:var(--f-label);font-weight:600;font-size:17px}
+.saved ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.saved li button{width:100%;text-align:left;display:flex;justify-content:space-between;gap:8px;background:var(--paper)}
+.saved li span.d{color:var(--muted);font-variant-numeric:tabular-nums}
+.example{display:inline-block;margin-left:8px;font:600 10.5px var(--f-body);letter-spacing:.08em;text-transform:uppercase;background:var(--heather-soft);color:var(--heather);padding:3px 7px;border-radius:4px;vertical-align:middle}
+footer.credits{margin-top:28px;border-top:1px solid var(--line);padding-top:14px;color:var(--muted);font-size:12px;max-width:80ch}
+footer.credits strong{color:var(--ink);font-weight:600}
+.copyfallback{width:100%;min-height:140px;margin-top:8px;font-size:12px}
+.brand{display:flex;align-items:center;gap:14px}
+.brand a.home img{height:64px;width:auto;display:block}
+.hp{position:absolute;left:-9999px}
+@media (prefers-reduced-motion:no-preference){button{transition:filter .15s}button:hover{filter:brightness(.97)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <a class="home" href="/" aria-label="ForeUnder Golf home"><img src="logo.png" alt="ForeUnder Golf"></a>
+      <div>
+        <h1>ForeUnder Fit</h1>
+        <p>We fit the specs. You pick the brand. We build it.</p>
+      </div>
+    </div>
+    <div class="actions">
+      <button type="button" id="btnNew">New fitting</button>
+      <button type="button" id="btnExample">Load example</button>
+    </div>
+  </header>
+
+  <div class="grid">
+    <form id="fitForm" autocomplete="off">
+      <section class="step">
+        <h2><span class="n">Step 1</span>Intake</h2>
+        <p class="hint">Who we're fitting and what they want from the clubs.</p>
+        <div class="fields">
+          <label>Player name<input id="name" type="text"></label>
+          <label>Date<input id="date" type="date"></label>
+          <label>Service
+            <select id="service">
+              <option>Spec check</option><option>Grip fitting</option><option>Iron fitting</option>
+              <option>Driver/woods fitting</option><option>Full bag</option><option>Build to spec</option>
+            </select></label>
+          <label>Handicap<input id="hcp" type="number" step="0.1" inputmode="decimal"></label>
+          <label>Hand<select id="hand"><option>Right</option><option>Left</option></select></label>
+          <label>Typical miss<input id="miss" type="text" placeholder="e.g. high slice"></label>
+          <label class="wide">Goals<textarea id="goals"></textarea></label>
+          <label class="wide">Current clubs and specs<textarea id="current"></textarea></label>
+        </div>
+      </section>
+
+      <section class="step">
+        <h2><span class="n">Steps 2–3</span>Measurements and starting specs</h2>
+        <p class="hint">Golf shoes on. Wrist-to-floor to the glove-hand wrist crease. Hand length from wrist crease to middle fingertip. Read the starting color code and length from the PING Color Code Chart.</p>
+        <div class="fields">
+          <label>Height (in)<input id="height" type="number" step="0.25" inputmode="decimal"></label>
+          <label>Wrist-to-floor (in)<input id="wtf" type="number" step="0.25" inputmode="decimal"></label>
+          <label>Hand length (in)<input id="handLen" type="number" step="0.25" inputmode="decimal"></label>
+          <label>Glove size<input id="glove" type="text" placeholder="e.g. ML"></label>
+          <label>Starting PING color code
+            <select id="colorStart"></select></label>
+          <label>Length vs standard (in)<input id="lenAdj" type="number" step="0.25" inputmode="decimal" placeholder="e.g. 0.5"></label>
+        </div>
+      </section>
+
+      <section class="step">
+        <h2><span class="n">Step 4</span>Dynamic testing</h2>
+        <p class="hint">Sharpie line on the ball, facing the clubface. 5 good swings with a 6- or 7-iron. Read the line against the grooves.</p>
+        <div class="fields">
+          <label>Lie test result
+            <select id="lieTest">
+              <option value="">Not tested</option>
+              <option value="square">About 90° to the grooves</option>
+              <option value="toe">Tilted toward the toe</option>
+              <option value="heel">Tilted toward the heel</option>
+            </select></label>
+          <label>Impact location
+            <select id="impact">
+              <option value="">Not checked</option><option>Center</option><option>Heel</option><option>Toe</option><option>High on face</option><option>Low on face</option>
+            </select></label>
+          <label>Ball flight vs lie mark
+            <select id="flightAgrees">
+              <option value="yes">Ball flight agrees</option>
+              <option value="no">Ball flight disagrees</option>
+            </select></label>
+        </div>
+        <p class="hint" style="margin-top:16px">Launch monitor averages per club (Garmin R10). Drop clear mishits.</p>
+        <div class="tblwrap">
+          <table>
+            <thead><tr><th>Club</th><th>Club speed (mph)</th><th>Launch (°)</th><th>Spin (rpm)</th><th>Carry (yd)</th><th>Side (yd)</th><th></th></tr></thead>
+            <tbody id="clubRows"></tbody>
+          </table>
+        </div>
+        <button type="button" class="rowbtn" id="btnAddRow">Add club</button>
+      </section>
+
+      <section class="step">
+        <h2><span class="n">Step 5</span>Shaft and head</h2>
+        <p class="hint">The customer picks the head. We fit the shaft and the specs.</p>
+        <div class="fields">
+          <label>Head (make, model)<input id="head" type="text"></label>
+          <label>Shaft<input id="shaft" type="text"></label>
+          <label>Flex<input id="flex" type="text"></label>
+          <label>Shaft weight (g)<input id="shaftWt" type="number" inputmode="numeric"></label>
+          <label>Grip model<input id="grip" type="text"></label>
+          <label>Swingweight<input id="sw" type="text" placeholder="e.g. D2"></label>
+          <label class="wide">Fitter notes<textarea id="notes"></textarea></label>
+        </div>
+      </section>
+    </form>
+
+    <aside>
+      <div class="card" aria-live="polite">
+        <div class="head">
+          <div class="eyebrow">ForeUnder Fit Summary <span id="exampleTag" class="example" hidden>Example</span></div>
+          <h3 id="sName">New player</h3>
+          <div class="meta" id="sMeta">—</div>
+        </div>
+        <div class="body" id="summary"></div>
+        <input class="hp" id="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="cardfoot">
+          <button type="button" class="primary" id="btnSave">Save to Google Sheet</button>
+          <button type="button" id="btnCopy">Copy summary</button>
+        </div>
+        <div class="cardfoot" style="padding-top:0"><div class="status" id="status"></div></div>
+        <textarea id="copyFallback" class="copyfallback" hidden readonly></textarea>
+      </div>
+      <div class="saved">
+        <h4>Where fittings go</h4>
+        <p class="empty" style="margin:0">Each saved fitting lands in the ForeUnder Fit Records Google Sheet. Saving again from this screen updates the same fitting. Your draft is kept on this device until you start a new fitting.</p>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="credits">
+    <p><strong>Standards used.</strong> Starting length and lie: PING Color Code Chart and PING fitting manual (each color code is 1° of lie). Grip size: Golf Pride Grip Size Guide. Driver launch and spin windows: published TrackMan data. Starting flex: general industry swing-speed charts. Ball data: Garmin Approach R10.</p>
+    <p>The ForeUnder Fit System is built on published industry fitting standards. PING, Golf Pride, TrackMan, Garmin, Foresight Sports, GolfWorks, True Temper, Nippon and Project X are trademarks of their respective owners. ForeUnder Golf is an independent clubmaker and is not affiliated with, endorsed by or certified by these companies.</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const COLORS = [
+    ["Gold",-4],["Brown",-3],["Orange",-2],["Red",-1],["Black",0],
+    ["Blue",1],["Green",2],["White",3],["Silver",4],["Maroon",5]
+  ];
+  const sel = $("colorStart");
+  sel.innerHTML = '<option value="">Not read yet</option>' + COLORS.map(([c,d]) =>
+    `<option value="${c}">${c} (${d===0?'standard':Math.abs(d)+'° '+(d>0?'upright':'flat')})</option>`).join("");
+
+  const FIELDS = ["name","date","service","hcp","hand","miss","goals","current","height","wtf","handLen","glove","colorStart","lenAdj","lieTest","impact","flightAgrees","head","shaft","flex","shaftWt","grip","sw","notes"];
+  let rows = [];
+  let currentId = null;
+  let isExample = false;
+
+  const EXAMPLE = {
+    name:"Example: Sample Player", date:"2026-11-14", service:"Driver/woods fitting", hcp:"18", hand:"Right",
+    miss:"Weak fade, low ball flight", goals:"Higher launch and more carry off the tee", current:"20-year-old driver, 9.5°, stiff shaft",
+    height:"66", wtf:"32.5", handLen:"6.75", glove:"ML", colorStart:"Black", lenAdj:"-0.5",
+    lieTest:"square", impact:"Toe", flightAgrees:"yes",
+    head:"", shaft:"", flex:"", shaftWt:"", grip:"", sw:"", notes:"Example data. Load or start a new fitting to clear.",
+    rows:[{club:"Driver",speed:"74",launch:"10.5",spin:"3600",carry:"158",side:"18"},{club:"7-iron",speed:"62",launch:"18",spin:"6100",carry:"108",side:"9"}]
+  };
+
+  function blankRows(){ return [{club:"Driver",speed:"",launch:"",spin:"",carry:"",side:""},{club:"7-iron",speed:"",launch:"",spin:"",carry:"",side:""}]; }
+
+  function renderRows(){
+    const tb = $("clubRows");
+    tb.innerHTML = "";
+    rows.forEach((r,i) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML =
+        `<td><input id="club-${i}" aria-label="Club" value=""></td>`+
+        ["speed","launch","spin","carry","side"].map(k=>`<td><input id="${k}-${i}" type="number" step="any" inputmode="decimal" aria-label="${k}"></td>`).join("")+
+        `<td><button type="button" class="del" aria-label="Remove club" data-i="${i}">×</button></td>`;
+      tb.appendChild(tr);
+      $("club-"+i).value = r.club||"";
+      ["speed","launch","spin","carry","side"].forEach(k=>{ $(k+"-"+i).value = r[k]||""; });
+    });
+  }
+
+  function readRows(){
+    rows = rows.map((r,i)=>({club:$("club-"+i).value, speed:$("speed-"+i).value, launch:$("launch-"+i).value, spin:$("spin-"+i).value, carry:$("carry-"+i).value, side:$("side-"+i).value}));
+    return rows;
+  }
+
+  function getData(){
+    const d = {};
+    FIELDS.forEach(f => d[f] = $(f).value);
+    d.rows = readRows();
+    return d;
+  }
+  function setData(d){
+    FIELDS.forEach(f => { $(f).value = d[f] ?? ""; });
+    if(!d.service) $("service").value = "Spec check";
+    if(!d.hand) $("hand").value = "Right";
+    if(!d.flightAgrees) $("flightAgrees").value = "yes";
+    rows = (d.rows && d.rows.length) ? d.rows.map(r=>({...r})) : blankRows();
+    renderRows();
+    update();
+  }
+
+  const num = v => { const n = parseFloat(v); return isFinite(n) ? n : null; };
+  const esc = s => String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+  function gripSize(h){
+    if(h===null) return null;
+    if(h<5) return "Junior";
+    if(h<6.6) return "Undersize";
+    if(h<7.6) return "Standard";
+    if(h<=9) return "Midsize";
+    return "Jumbo";
+  }
+
+  function driverWindow(s){
+    if(s>=105) return {band:"105+ mph", l:[10,16], sp:[1750,2300]};
+    if(s>=97) return {band:"97–104 mph", l:[12,16], sp:[1950,2500]};
+    if(s>=84) return {band:"84–96 mph", l:[13,16], sp:[2400,2700]};
+    if(s>=72) return {band:"72–83 mph", l:[14,19], sp:[2600,3000]};
+    return {band:"under 72 mph", l:[14,19], sp:[2900,3400]};
+  }
+  function flexGuide(s){
+    if(s<75) return "Senior or Ladies";
+    if(s<95) return "Regular";
+    if(s<110) return "Stiff";
+    return "Extra stiff";
+  }
+
+  function pill(cls, txt){ return `<span class="pill ${cls}">${esc(txt)}</span>`; }
+
+  function update(){
+    const d = getData();
+    // header
+    $("sName").textContent = d.name || "New player";
+    const metaBits = [d.service, d.date ? new Date(d.date+"T12:00:00").toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"}) : null, d.hcp ? "Hcp "+d.hcp : null, d.hand ? d.hand+"-handed" : null].filter(Boolean);
+    $("sMeta").textContent = metaBits.join(" · ") || "—";
+    $("exampleTag").hidden = !isExample;
+
+    let html = "";
+
+    // Grip
+    const hl = num(d.handLen); const gs = gripSize(hl);
+    html += `<div class="sum"><h4>Grip size ${gs ? pill("good", gs) : pill("idle","Needs hand length")}</h4>`;
+    html += gs ? `<dl class="kv"><dt>Hand length</dt><dd>${hl}"</dd><dt>Glove</dt><dd>${esc(d.glove||"—")}</dd><dt>Basis</dt><dd>Golf Pride Grip Size Guide</dd></dl>` : `<p class="empty">Measure wrist crease to middle fingertip.</p>`;
+    html += `</div>`;
+
+    // Length and lie
+    const c = COLORS.find(x=>x[0]===d.colorStart);
+    let lieStatus = pill("idle","Not started");
+    let rec = "";
+    let finalCode = null;
+    if(c){
+      let idx = COLORS.indexOf(c);
+      if(d.lieTest==="square"){ lieStatus = pill("good","Confirmed"); finalCode = c; rec = `Keep ${c[0]}. The strike confirms the static reading.`; }
+      else if(d.lieTest==="toe"){ lieStatus = pill("warn","Too upright"); finalCode = COLORS[Math.max(0,idx-1)]; rec = `Go 1° flatter to ${finalCode[0]}, then retest. Stay within 2 codes of ${c[0]} unless ball flight says otherwise.`; }
+      else if(d.lieTest==="heel"){ lieStatus = pill("warn","Too flat"); finalCode = COLORS[Math.min(COLORS.length-1,idx+1)]; rec = `Go 1° upright to ${finalCode[0]}, then retest. Stay within 2 codes of ${c[0]} unless ball flight says otherwise.`; }
+      else { lieStatus = pill("idle","Static only"); rec = "Run the Sharpie lie test before building. Static readings get close; strike decides."; }
+      if(d.lieTest && d.lieTest!=="square" && d.flightAgrees==="no") rec += " Ball flight disagrees with the mark, and ball flight takes priority. Hit more shots before bending.";
+    }
+    const la = num(d.lenAdj);
+    html += `<div class="sum"><h4>Length and lie ${lieStatus}</h4><dl class="kv">`;
+    html += `<dt>Height / wrist-to-floor</dt><dd>${d.height?esc(d.height)+'"':'—'} / ${d.wtf?esc(d.wtf)+'"':'—'}</dd>`;
+    html += `<dt>Starting code</dt><dd>${c ? `${c[0]} (${c[1]===0?'standard':Math.abs(c[1])+'° '+(c[1]>0?'upright':'flat')})` : '—'}</dd>`;
+    if(finalCode && finalCode!==c) html += `<dt>Suggested code</dt><dd>${finalCode[0]} (${finalCode[1]===0?'standard':Math.abs(finalCode[1])+'° '+(finalCode[1]>0?'upright':'flat')})</dd>`;
+    html += `<dt>Length</dt><dd>${la===null?'—':(la===0?'Standard':(la>0?'+':'')+la+'" vs standard')}</dd>`;
+    html += `<dt>Impact</dt><dd>${esc(d.impact||'—')}</dd></dl>`;
+    if(rec) html += `<p class="rec">${esc(rec)}</p>`;
+    if(c) html += `<p class="empty" style="margin-top:6px">Color codes are relative to PING's standard. On other brands, apply the same degrees to that head's spec.</p>`;
+    html += `</div>`;
+
+    // Driver
+    const drv = (d.rows||[]).find(r => /driver/i.test(r.club||"") && num(r.speed)!==null);
+    html += `<div class="sum"><h4>Driver `;
+    if(drv){
+      const s = num(drv.speed), L = num(drv.launch), S = num(drv.spin), w = driverWindow(s);
+      const lState = L===null ? null : (L<w.l[0] ? "low" : L>w.l[1] ? "high" : "ok");
+      const sState = S===null ? null : (S<w.sp[0] ? "low" : S>w.sp[1] ? "high" : "ok");
+      const inWin = lState==="ok" && sState==="ok";
+      html += (lState&&sState) ? (inWin ? pill("good","In window") : pill("warn","Outside window")) : pill("idle","Needs launch and spin");
+      html += `</h4><dl class="kv"><dt>Club speed</dt><dd>${s} mph (${w.band})</dd>`;
+      html += `<dt>Launch</dt><dd>${L===null?'—':L+'°'} <span style="color:var(--muted)">target ${w.l[0]}–${w.l[1]}°</span></dd>`;
+      html += `<dt>Spin</dt><dd>${S===null?'—':S.toLocaleString()+' rpm'} <span style="color:var(--muted)">target ${w.sp[0].toLocaleString()}–${w.sp[1].toLocaleString()}</span></dd>`;
+      if(num(drv.carry)!==null) html += `<dt>Carry</dt><dd>${num(drv.carry)} yd${num(drv.side)!==null?' · '+num(drv.side)+' yd side':''}</dd>`;
+      html += `<dt>Starting flex</dt><dd>${flexGuide(s)}</dd></dl>`;
+      let dr = "";
+      if(lState==="low" && sState!=="high") dr = "Launch is low. Add loft before changing the shaft.";
+      else if(lState==="low" && sState==="high") dr = "Low launch with high spin usually points to a downward strike or low-face contact. Check impact before changing loft.";
+      else if(lState==="high" && sState==="high") dr = "Launching and spinning high. Try less loft or a lower-spin head or shaft.";
+      else if(lState==="high") dr = "Launch is high. Try less loft.";
+      else if(sState==="high") dr = "Spin is high for this speed. Check face contact, then try a lower-spin head or shaft.";
+      else if(sState==="low") dr = "Spin is low for this speed, which costs carry. Add loft or try a higher-spin setup.";
+      else if(inWin) dr = "Launch and spin are in the window for this speed. Fit the shaft for dispersion and feel.";
+      if(dr) html += `<p class="rec">${esc(dr)}</p>`;
+    } else {
+      html += pill("idle","No driver data") + `</h4><p class="empty">Add a Driver row with club speed, launch and spin.</p>`;
+    }
+    html += `</div>`;
+
+    // Other clubs
+    const others = (d.rows||[]).filter(r => !/driver/i.test(r.club||"") && (num(r.speed)!==null || num(r.carry)!==null));
+    if(others.length){
+      html += `<div class="sum"><h4>Irons and others</h4><dl class="kv">`;
+      others.forEach(r=>{
+        const bits = [num(r.speed)!==null?num(r.speed)+' mph':null, num(r.carry)!==null?num(r.carry)+' yd carry':null, num(r.launch)!==null?num(r.launch)+'° launch':null, num(r.spin)!==null?num(r.spin).toLocaleString()+' rpm':null].filter(Boolean);
+        html += `<dt>${esc(r.club||'Club')}</dt><dd>${esc(bits.join(' · '))}</dd>`;
+      });
+      html += `</dl></div>`;
+    }
+
+    // Build spec
+    const specBits = [["Head",d.head],["Shaft",d.shaft],["Flex",d.flex],["Shaft weight",d.shaftWt?d.shaftWt+" g":""],["Grip",[d.grip,gs].filter(Boolean).join(", ")],["Swingweight",d.sw]].filter(x=>x[1]);
+    html += `<div class="sum"><h4>Build spec ${specBits.length>=4?pill("good","Ready to build"):pill("idle","In progress")}</h4>`;
+    html += specBits.length ? `<dl class="kv">${specBits.map(([k,v])=>`<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl>` : `<p class="empty">Fill in step 5 once the customer picks a head.</p>`;
+    if(d.miss || d.goals) html += `<dl class="kv" style="margin-top:8px">${d.miss?`<dt>Miss</dt><dd>${esc(d.miss)}</dd>`:''}${d.goals?`<dt>Goals</dt><dd>${esc(d.goals)}</dd>`:''}</dl>`;
+    if(d.notes) html += `<p class="rec">${esc(d.notes)}</p>`;
+    html += `</div>`;
+
+    $("summary").innerHTML = html;
+  }
+
+  function summaryText(){
+    const d = getData();
+    const lines = [];
+    lines.push("FOREUNDER FIT SUMMARY");
+    lines.push([d.name||"Player", d.service, d.date].filter(Boolean).join(" | "));
+    lines.push("");
+    document.querySelectorAll("#summary .sum").forEach(s=>{
+      const h = s.querySelector("h4");
+      lines.push(h ? h.innerText.replace(/\s+/g," ").trim().toUpperCase() : "");
+      s.querySelectorAll("dl.kv").forEach(dl=>{
+        const dts = dl.querySelectorAll("dt"), dds = dl.querySelectorAll("dd");
+        dts.forEach((dt,i)=>lines.push("  "+dt.innerText+": "+(dds[i]?dds[i].innerText:"")));
+      });
+      s.querySelectorAll("p.rec").forEach(p=>lines.push("  > "+p.innerText));
+      lines.push("");
+    });
+    lines.push("Built on PING, Golf Pride and TrackMan published standards. ForeUnder Golf is independent and not affiliated with or endorsed by these companies.");
+    return lines.join("\n");
+  }
+
+  // events
+  $("fitForm").addEventListener("input", ()=>{ isExample = false; update(); });
+  $("fitForm").addEventListener("change", ()=>{ update(); });
+  $("fitForm").addEventListener("submit", e=>e.preventDefault());
+  $("clubRows").addEventListener("click", e=>{
+    const b = e.target.closest(".del"); if(!b) return;
+    readRows(); rows.splice(+b.dataset.i,1); renderRows(); update();
+  });
+  $("btnAddRow").addEventListener("click", ()=>{ readRows(); rows.push({club:"",speed:"",launch:"",spin:"",carry:"",side:""}); renderRows(); $("club-"+(rows.length-1)).focus(); });
+  $("btnNew").addEventListener("click", ()=>{
+    currentId = null; isExample = false;
+    setData({date:new Date().toISOString().slice(0,10)});
+    $("status").textContent = "New fitting started.";
+  });
+  $("btnExample").addEventListener("click", ()=>{ currentId = null; isExample = true; setData(EXAMPLE); $("status").textContent = "Example loaded. It is sample data, not a customer."; });
+
+  $("btnCopy").addEventListener("click", ()=>{
+    const t = summaryText();
+    const fb = $("copyFallback");
+    const show = ()=>{ fb.hidden = false; fb.value = t; fb.focus(); fb.select(); $("status").textContent = "Select all and copy the text below."; };
+    try{
+      navigator.clipboard.writeText(t).then(()=>{ fb.hidden = true; $("status").textContent = "Summary copied."; }, show);
+    }catch(e){ show(); }
+  });
+
+  // ---- Google Sheet saving ----
+  // Paste the Web App URL from Apps Script (Deploy > Manage deployments) between the quotes.
+  const SHEET_URL = "https://script.google.com/macros/s/AKfycbwZ_FElVWSt5L-xFhtm_HG82rJm0lWdA67yU0SudX3bcymDgN3iiP-HfZNyiJTJHRD9Vw/exec";
+  const SHEET_KEY = "fu-20cb4ad4f705c018398fbeb2";
+  const status = $("status");
+  const DRAFT = "foreunder-fit-draft";
+
+  function fittingId(d){
+    const y = (d.date||new Date().toISOString()).slice(0,4);
+    const r = Math.random().toString(36).slice(2,6).toUpperCase();
+    return `FU-F-${y}-${r}`;
+  }
+  function saveDraft(){
+    if(isExample) return;
+    try{ localStorage.setItem(DRAFT, JSON.stringify({id:currentId, data:getData()})); }catch(e){}
+  }
+  function clearDraft(){ try{ localStorage.removeItem(DRAFT); }catch(e){} }
+
+  $("fitForm").addEventListener("input", saveDraft);
+  $("fitForm").addEventListener("change", saveDraft);
+  $("btnNew").addEventListener("click", ()=>{ clearDraft(); });
+
+  async function save(){
+    if(isExample){ status.textContent = "This is the example. Press New fitting to save a real one."; return; }
+    if($("website").value){ return; }
+    const d = getData();
+    if(!d.name.trim()){ status.textContent = "Add the player's name before saving."; $("name").focus(); return; }
+    if(SHEET_URL.indexOf("https://script.google.com/") !== 0){ status.textContent = "Saving isn't connected yet. Copy the summary for now."; return; }
+    currentId = currentId || fittingId(d);
+    const c = COLORS.find(x=>x[0]===d.colorStart);
+    let sugg = c ? c[0] : "";
+    if(c && d.lieTest==="toe") sugg = COLORS[Math.max(0,COLORS.indexOf(c)-1)][0];
+    if(c && d.lieTest==="heel") sugg = COLORS[Math.min(COLORS.length-1,COLORS.indexOf(c)+1)][0];
+    const drvRow = (d.rows||[]).find(r=>/driver/i.test(r.club||"") && num(r.speed)!==null);
+    let win = "";
+    if(drvRow && num(drvRow.launch)!==null && num(drvRow.spin)!==null){
+      const w = driverWindow(num(drvRow.speed));
+      const L = num(drvRow.launch), S = num(drvRow.spin);
+      win = (L>=w.l[0] && L<=w.l[1] && S>=w.sp[0] && S<=w.sp[1]) ? "In window" : "Outside window";
+    }
+    const lieWords = {square:"Square", toe:"Toe: too upright", heel:"Heel: too flat"};
+    const payload = {
+      key: SHEET_KEY, fittingId: currentId,
+      ...d,
+      gripSize: gripSize(num(d.handLen)) || "",
+      lieTestText: lieWords[d.lieTest] || "",
+      suggestedColor: sugg,
+      driverSpeed: drvRow ? drvRow.speed : "", driverLaunch: drvRow ? drvRow.launch : "", driverSpin: drvRow ? drvRow.spin : "",
+      driverWindow: win,
+      summary: summaryText()
+    };
+    $("btnSave").disabled = true;
+    status.textContent = "Saving…";
+    try{
+      await fetch(SHEET_URL, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify(payload)});
+      status.textContent = `Sent to Google Sheet as ${currentId}. Check the Summary tab to confirm.`;
+      saveDraft();
+    }catch(e){
+      status.textContent = "Couldn't reach Google. Check the connection and press Save again.";
+    }finally{ $("btnSave").disabled = false; }
+  }
+  $("btnSave").addEventListener("click", save);
+
+  // first paint: restore draft, else example
+  let draft = null;
+  try{ draft = JSON.parse(localStorage.getItem(DRAFT) || "null"); }catch(e){}
+  if(draft && draft.data){ currentId = draft.id || null; isExample = false; setData(draft.data); status.textContent = currentId ? `Draft restored (${currentId}).` : "Draft restored."; }
+  else { isExample = true; setData(EXAMPLE); }
+})();
+</script>
+</body>
+</html>

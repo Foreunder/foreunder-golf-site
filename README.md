@@ -1,0 +1,5 @@
+# ForeUnder Golf USA website
+
+Source for foreundergolfusa.com. Netlify publishes the `main` branch automatically (publish directory: repo root, no build command).
+
+Forms (contact, trade-in) are Netlify Forms; contact also sends via Web3Forms.
