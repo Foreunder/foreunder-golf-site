@@ -4,4 +4,4 @@ Source for foreundergolfusa.com. Netlify publishes the `main` branch automatical
 
 Forms (contact, trade-in) are Netlify Forms; contact also sends via Web3Forms.
 
-Deploy pipeline verified Nov 24, 2026.
+Deploy pipeline verified Nov 24, 2026 (public repo, push-to-deploy).
