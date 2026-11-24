@@ -165,6 +165,13 @@ footer.credits strong{color:var(--ink);font-weight:600}
               <option value="yes">Ball flight agrees</option>
               <option value="no">Ball flight disagrees</option>
             </select></label>
+          <label>Tempo and transition
+            <select id="tempo">
+              <option value="">Not rated</option>
+              <option value="smooth">Smooth: even pace, soft change of direction</option>
+              <option value="medium">Medium</option>
+              <option value="aggressive">Aggressive: fast, hard change of direction</option>
+            </select></label>
         </div>
         <p class="hint" style="margin-top:16px">Launch monitor averages per club (Garmin R10). Drop clear mishits.</p>
         <div class="tblwrap">
@@ -215,7 +222,7 @@ footer.credits strong{color:var(--ink);font-weight:600}
   </div>
 
   <footer class="credits">
-    <p><strong>Standards used.</strong> Starting length and lie: PING Color Code Chart and PING fitting manual (each color code is 1° of lie). Grip size: Golf Pride Grip Size Guide. Driver launch and spin windows: published TrackMan data. Starting flex: general industry swing-speed charts. Ball data: Garmin Approach R10.</p>
+    <p><strong>Standards used.</strong> Starting length and lie: PING Color Code Chart and PING fitting manual (each color code is 1° of lie). Grip size: Golf Pride Grip Size Guide. Driver launch and spin windows: published TrackMan data. Starting flex: general industry swing-speed charts (iron bands scaled from driver bands by the typical 7-iron to driver speed ratio). Weight and tempo adjustments: ForeUnder fitter guidelines, confirmed by testing. Ball data: Garmin Approach R10.</p>
     <p>The ForeUnder Fit System is built on published industry fitting standards. PING, Golf Pride, TrackMan, Garmin, Foresight Sports, GolfWorks, True Temper, Nippon and Project X are trademarks of their respective owners. ForeUnder Golf is an independent clubmaker and is not affiliated with, endorsed by or certified by these companies.</p>
   </footer>
 </div>
@@ -231,7 +238,7 @@ footer.credits strong{color:var(--ink);font-weight:600}
   sel.innerHTML = '<option value="">Not read yet</option>' + COLORS.map(([c,d]) =>
     `<option value="${c}">${c} (${d===0?'standard':Math.abs(d)+'° '+(d>0?'upright':'flat')})</option>`).join("");
 
-  const FIELDS = ["name","date","service","hcp","hand","miss","goals","current","height","wtf","handLen","glove","colorStart","lenAdj","lieTest","impact","flightAgrees","head","shaft","flex","shaftWt","grip","sw","notes"];
+  const FIELDS = ["name","date","service","hcp","hand","miss","goals","current","height","wtf","handLen","glove","colorStart","lenAdj","lieTest","impact","flightAgrees","tempo","head","shaft","flex","shaftWt","grip","sw","notes"];
   let rows = [];
   let currentId = null;
   let isExample = false;
@@ -240,7 +247,7 @@ footer.credits strong{color:var(--ink);font-weight:600}
     name:"Example: Sample Player", date:"2026-11-14", service:"Driver/woods fitting", hcp:"18", hand:"Right",
     miss:"Weak fade, low ball flight", goals:"Higher launch and more carry off the tee", current:"20-year-old driver, 9.5°, stiff shaft",
     height:"66", wtf:"32.5", handLen:"6.75", glove:"ML", colorStart:"Black", lenAdj:"-0.5",
-    lieTest:"square", impact:"Toe", flightAgrees:"yes",
+    lieTest:"square", impact:"Toe", flightAgrees:"yes", tempo:"smooth",
     head:"", shaft:"", flex:"", shaftWt:"", grip:"", sw:"", notes:"Example data. Load or start a new fitting to clear.",
     rows:[{club:"Driver",speed:"74",launch:"10.5",spin:"3600",carry:"158",side:"18"},{club:"7-iron",speed:"62",launch:"18",spin:"6100",carry:"108",side:"9"}]
   };
@@ -307,6 +314,64 @@ footer.credits strong{color:var(--ink);font-weight:600}
     if(s<95) return "Regular";
     if(s<110) return "Stiff";
     return "Extra stiff";
+  }
+  // Iron flex from 7-iron club speed (driver bands scaled by ~0.8, the typical 7-iron to driver ratio)
+  const IRON_BANDS = [[60,"Senior or Ladies"],[76,"Regular"],[88,"Stiff"],[Infinity,"Extra stiff"]];
+  const DRV_BANDS = [[75,"Senior or Ladies"],[95,"Regular"],[110,"Stiff"],[Infinity,"Extra stiff"]];
+  function band(s, bands){ return bands.findIndex(b => s < b[0]); }
+  // Starting shaft weight ranges by speed, shifted one step by tempo
+  const DRV_WT = [[85,"45–55 g"],[100,"55–65 g"],[Infinity,"65–75 g"]];
+  const IRON_WT = [[70,"80–95 g (light steel or graphite)"],[82,"95–115 g"],[Infinity,"115–130 g"]];
+  function weightFor(s, table, tempo){
+    let i = table.findIndex(b => s < b[0]);
+    if(tempo==="aggressive") i = Math.min(table.length-1, i+1);
+    if(tempo==="smooth") i = Math.max(0, i-1);
+    return table[i][1];
+  }
+  function shaftFit(d){
+    const drv = (d.rows||[]).find(r => /driver/i.test(r.club||"") && num(r.speed)!==null);
+    const iron = (d.rows||[]).find(r => /7/.test(r.club||"") && /iron|^7$|7i/i.test(r.club||"") && num(r.speed)!==null);
+    if(!drv && !iron) return null;
+    const tempo = d.tempo, out = {rows:[], recs:[]};
+    const tempoTxt = {smooth:"Smooth", medium:"Medium", aggressive:"Aggressive"}[tempo] || "Not rated";
+    out.rows.push(["Tempo", tempoTxt]);
+    const flexLine = (s, bands) => {
+      const i = band(s, bands), f = bands[i][1];
+      const up = isFinite(bands[i][0]) && bands[i][0] - s <= 3;      // within 3 mph below the next flex up
+      const down = i > 0 && s - bands[i-1][0] < 3;                   // within 3 mph above the next flex down
+      if(up && tempo !== "smooth") return `${f} · test ${bands[i+1][1]} too (${tempo==="aggressive" ? "aggressive tempo near the edge" : "within 3 mph of the edge"})`;
+      if(down && tempo !== "aggressive") return `${f} · test ${bands[i-1][1]} too (${tempo==="smooth" ? "smooth tempo near the edge" : "within 3 mph of the edge"})`;
+      return f;
+    };
+    if(drv){
+      const s = num(drv.speed);
+      out.rows.push(["Woods flex", flexLine(s, DRV_BANDS)]);
+      out.rows.push(["Woods weight", weightFor(s, DRV_WT, tempo)]);
+      const L = num(drv.launch), S = num(drv.spin);
+      if(L!==null && S!==null){
+        const w = driverWindow(s);
+        if(L < w.l[0] && S < w.sp[0]) out.recs.push("Driver profile: launch and spin are both low. Try a higher-launch, softer-tip shaft in the same flex before changing flex.");
+        else if(L > w.l[1] && S > w.sp[1]) out.recs.push("Driver profile: launch and spin are both high. Try a lower-launch, firmer-tip shaft in the same flex.");
+        else if(L >= w.l[0] && L <= w.l[1] && S >= w.sp[0] && S <= w.sp[1]) out.recs.push("Driver profile: launch and spin are in the window. Choose between candidate shafts on dispersion and feel.");
+        else out.recs.push("Driver profile: fix launch or spin with loft or head first (see Driver above), then pick the shaft on dispersion.");
+      }
+    }
+    if(iron){
+      const s = num(iron.speed);
+      out.rows.push(["Iron flex", flexLine(s, IRON_BANDS)]);
+      out.rows.push(["Iron weight", weightFor(s, IRON_WT, tempo)]);
+      if(drv){
+        const r = s / num(drv.speed);
+        out.rows.push(["7-iron / driver speed", Math.round(r*100) + "%"]);
+        if(r < 0.78) out.recs.push("7-iron speed is low for this driver speed. Check iron strike and sequencing; fit the irons from the 7-iron, not the driver.");
+        else if(r > 0.86) out.recs.push("Driver speed is low for this 7-iron speed. Check driver strike or length before fitting the driver shaft.");
+      }
+    }
+    if(!tempo) out.recs.push("Rate tempo and transition. It sets shaft weight and how firm the shaft should feel.");
+    if(tempo==="aggressive") out.recs.push("Aggressive transition: lean heavier and firmer. A shaft that's too light or soft for this tempo shows up as a left miss and wide dispersion.");
+    if(tempo==="smooth") out.recs.push("Smooth tempo: lean lighter. A shaft that's too heavy or stiff for this tempo shows up as low, right misses and lost carry.");
+    out.recs.push("Speeds are R10 averages (±3 mph). Final call between two candidate shafts: the tighter side dispersion wins.");
+    return out;
   }
 
   function pill(cls, txt){ return `<span class="pill ${cls}">${esc(txt)}</span>`; }
@@ -377,6 +442,15 @@ footer.credits strong{color:var(--ink);font-weight:600}
     } else {
       html += pill("idle","No driver data") + `</h4><p class="empty">Add a Driver row with club speed, launch and spin.</p>`;
     }
+    html += `</div>`;
+
+    // Shaft fit
+    const sf = shaftFit(d);
+    html += `<div class="sum"><h4>Shaft fit ${sf ? (d.tempo ? pill("good","Speed + tempo + flight") : pill("warn","Needs tempo")) : pill("idle","Needs speeds")}</h4>`;
+    if(sf){
+      html += `<dl class="kv">${sf.rows.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl>`;
+      sf.recs.forEach(r => { html += `<p class="rec">${esc(r)}</p>`; });
+    } else html += `<p class="empty">Add Driver and 7-iron rows with club speed, then rate tempo.</p>`;
     html += `</div>`;
 
     // Other clubs
