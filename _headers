@@ -1,0 +1,4 @@
+/sim/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: no-cache
+  X-Robots-Tag: noindex

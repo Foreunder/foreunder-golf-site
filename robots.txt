@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /sim/
 
 Sitemap: https://foreundergolfusa.com/sitemap.xml
