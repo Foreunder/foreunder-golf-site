@@ -372,8 +372,21 @@ footer.credits strong{color:var(--ink);font-weight:600}
     if(!tempo) out.recs.push("Rate tempo and transition. It sets shaft weight and how firm the shaft should feel.");
     if(tempo==="aggressive") out.recs.push("Aggressive transition: lean heavier and firmer. A shaft that's too light or soft for this tempo shows up as a left miss and wide dispersion.");
     if(tempo==="smooth") out.recs.push("Smooth tempo: lean lighter. A shaft that's too heavy or stiff for this tempo shows up as low, right misses and lost carry.");
-    out.recs.push("Speeds are R10 averages (±3 mph). Final call between two candidate shafts: tightest carry spread wins, then tightest side dispersion.");
+    const sr = smashRows(d); if(sr.some(x=>x.grade==="leak")) out.recs.unshift("Smash factor is below target. Shaft changes won't fix strike; get contact centered first, then compare shafts.");
+    out.recs.push("Speeds are R10 averages (±3 mph). Final call between two candidate shafts: highest average smash factor wins, then tightest carry spread, then tightest side dispersion.");
     return out;
+  }
+
+
+  // Smash factor (ball speed / club speed). TrackMan PGA Tour averages by club.
+  const TOUR_SMASH = [[/driver|^dr$|^1w$/i,1.49,"Driver"],[/3\s*-?\s*w|3 wood|fairway|5\s*-?\s*w|^\d?w$/i,1.47,"Fairway"],[/hybrid|^\d?h$|rescue/i,1.46,"Hybrid"],
+    [/(^|\D)3(\D|$)/,1.45],[/(^|\D)4(\D|$)/,1.43],[/(^|\D)5(\D|$)/,1.41],[/(^|\D)6(\D|$)/,1.38],[/(^|\D)7(\D|$)/,1.33],[/(^|\D)8(\D|$)/,1.32],[/(^|\D)9(\D|$)/,1.28],
+    [/pw|pitch/i,1.23],[/gw|uw|aw|sw|lw|wedge|5[0-9]|6[0-4]/i,1.20]];
+  function tourSmash(club){ const c=(club||"").trim(); if(!c) return null; for(const t of TOUR_SMASH){ if(t[0].test(c)) return t[1]; } return null; }
+  function smashRows(d){
+    return (d.rows||[]).map(r=>{ const cs=num(r.speed), bs=num(r.ballSpeed); if(!cs||!bs) return null; const sm=bs/cs, tour=tourSmash(r.club);
+      let grade=null; if(tour!==null){ const gap=tour-sm; grade = gap<=-0.05 ? "check" : gap<=0.02 ? "pure" : gap<=0.06 ? "solid" : "leak"; }
+      return {club:r.club||"—", sm, tour, grade, cs, bs}; }).filter(Boolean);
   }
 
   // Estimated descent (land) angle. Fitted to Trackman PGA/LPGA Tour averages (avg error ~1.4°, max ~3.3°).
@@ -399,6 +412,24 @@ footer.credits strong{color:var(--ink);font-weight:600}
     $("exampleTag").hidden = !isExample;
 
     let html = "";
+
+    // Strike quality (smash factor) - primary gate: if the ball isn't compressed, nothing else matters
+    { const sr = smashRows(d);
+      const leaks = sr.filter(x=>x.grade==="leak"), checks = sr.filter(x=>x.grade==="check");
+      const head = !sr.length ? pill("idle","Needs club + ball speed") : leaks.length ? pill("bad","Strike first") : pill("good","Compressing it");
+      html += `<div class="sum strike"><h4>Strike quality · smash factor ${head}</h4>`;
+      if(sr.length){
+        html += `<dl class="kv">` + sr.map(x=>{
+          const lab = {pure:"pure",solid:"solid",leak:"leaking",check:"check club speed"}[x.grade] || "";
+          const lost = (x.tour!==null && x.grade==="leak") ? ` · ~${Math.round((x.tour-0.02-x.sm)*x.cs)} mph ball speed left on the table` : "";
+          return `<dt>${esc(x.club)}</dt><dd><b>${x.sm.toFixed(2)}</b>${x.tour!==null?` <span style="color:var(--muted)">tour ${x.tour.toFixed(2)}</span>`:""}${lab?" · "+lab:""}${lost}</dd>`;
+        }).join("") + `</dl>`;
+        if(leaks.length) html += `<p class="rec">Strike is the limiter. Fix centered contact before changing shafts or heads: foot spray or impact tape on every swing, and judge each club on smash first. Roughly 1.5–2 yards of carry per mph of ball speed.</p>`;
+        else html += `<p class="rec">Strike is solid. Fit launch, spin and dispersion next.</p>`;
+        if(checks.length) html += `<p class="empty" style="margin-top:6px">A smash well above tour average usually means the launch monitor misread club speed. Re-hit before using that row.</p>`;
+      } else html += `<p class="empty">Enter club speed and ball speed for each club. Smash factor is the first thing checked.</p>`;
+      html += `</div>`;
+    }
 
     // Grip
     const hl = num(d.handLen); const gs = gripSize(hl);
